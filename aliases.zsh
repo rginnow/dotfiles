@@ -2,7 +2,7 @@
 weather() { curl wttr.in/ }
 alias up="cd .."
 alias reloadcli="source $HOME/.zshrc"
-#alias ll="/usr/local/opt/coreutils/libexec/gnubin/ls -ahlF --color --group-directories-first"
+alias ll="/usr/local/opt/coreutils/libexec/gnubin/ls -ahlF --color --group-directories-first"
 alias shrug="echo '¯\_(ツ)_/¯' | pbcopy"
 alias c="clear"
 #alias zbundle="antibody bundle < $DOTFILES/zsh_plugins.txt > $DOTFILES/zsh_plugins.sh"
