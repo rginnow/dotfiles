@@ -35,8 +35,10 @@ brew 'yarn'
 #cask 'aerial'
 cask 'alfred'
 cask 'bartender'
+cask 'bear'
 cask 'cloudapp'
 cask 'discord'
+cask 'figma'
 cask 'firefox'
 cask 'google-backup-and-sync'
 cask 'google-chrome'
@@ -72,3 +74,4 @@ cask 'font-montserrat'
 # Mac App Store
 mas 'Spark', id: 1176895641
 mas 'The Unarchiver', id: 425424353
+mas 'Bear', id: 1091189122
