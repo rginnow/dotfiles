@@ -1,0 +1,22 @@
+[core]
+	editor = vim
+	excludesfile = ~/.gitignore_global
+[alias]
+	; List all branches
+	branches = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
+	
+    ; Delete a branch.
+	del = branch -D
+
+	; Show the last commit.
+	last = log -1 HEAD --stat
+
+	; Undo the last commit.
+	undo = reset HEAD~1 --mixed
+
+	; Add and commit everything with "wip" as the commit message.
+	wip = !git add --all && git commit -m 'wip'
+[include]
+    path = ~/.gitconfig_local
+[init]
+	defaultBranch = main
