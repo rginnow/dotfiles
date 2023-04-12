@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+DOTFILES=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+
+# ZSH configs
+ln -sf $DOTFILES/zsh/aliases $HOME/.aliases
+ln -sf $DOTFILES/zsh/zshrc $HOME/.zshrc
+ln -sf $DOTFILES/zsh/p10k.zsh $HOME/.p10k.zsh
+
+# Git configs
+ln -sf $DOTFILES/git/gitconfig $HOME/.gitconfig
+ln -sf $DOTFILES/git/gitignore_global $HOME/.gitignore_global
+
+# Install custom bin scripts
+rm -rf $HOME/bin
+ln -s $DOTFILES/bin $HOME/bin
+
+# When we have bin/local scripts we want, use this symlink
+# ln -sf $DOTFILES/bin/local/* $HOME/.local/bin
