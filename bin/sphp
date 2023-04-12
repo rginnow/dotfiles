@@ -25,12 +25,12 @@ fi
 
 echo "switch to PHP $switch_to"
 
-switch_from=`php --version | grep -oP "PHP (\d\.\d+?)" | cut -d " " -f2`
+switch_from=$(php --version | grep -oP "PHP (\d\.\d+?)" | cut -d " " -f2)
 echo "switch from PHP $switch_from"
 echo "this will require sudo privileges"
 
 echo "switching CLI"
-sudo update-alternatives --set php /usr/bin/php$switch_to
+sudo update-alternatives --set php /usr/bin/php"$switch_to"
 # todo add phar, etc?
 
 # Not using Apache, commented out
@@ -40,16 +40,16 @@ sudo update-alternatives --set php /usr/bin/php$switch_to
 
 # Stop old PHP
 echo "Stopping PHP$switch_from FPM"
-sudo service php$switch_from-fpm stop
+sudo service php"$switch_from"-fpm stop
 
 # Start new PHP
 echo "Starting PHP$switch_to FPM"
-sudo service php$switch_to-fpm start
+sudo service php"$switch_to"-fpm start
 
 # Update NGINX
 echo "updating symlinks for nginx config"
-sudo ln -sf /etc/php/$switch_to /etc/php/current
-sudo ln -sf /run/php/php$switch_to-fpm.sock /run/php/php-fpm.sock
+sudo ln -sf /etc/php/"$switch_to" /etc/php/current
+sudo ln -sf /run/php/php"$switch_to"-fpm.sock /run/php/php-fpm.sock
 
 echo "restarting nginx"
 sudo service nginx restart

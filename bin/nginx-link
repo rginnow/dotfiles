@@ -1,1 +1,3 @@
-sudo ln -s /etc/nginx/sites-available/$1 /etc/nginx/sites-enabled/
+#!/bin/bash
+
+sudo ln -s /etc/nginx/sites-available/"$1" /etc/nginx/sites-enabled/
