@@ -1,0 +1,59 @@
+# A hack to fix clock drift on WSL
+update_clock () {
+    echo '[ROOT] Updating clock (sudo hwclock --hctosys)'
+    sudo hwclock -s
+    sudo ntpdate time.windows.com
+}
+
+# Needed if using multiple version of PHP
+get_phpfpm () {
+    unset x
+    x=$(php -v | awk '{ print $2 }' | grep "8" | cut -b 1-3)
+    echo "php$x-fpm"
+}
+
+# Global stuff
+alias vim=nvim
+alias zshconf="vim ~/.zshrc"
+alias ohmyzsh="vim ~/.oh-my-zsh"
+alias showpath="echo -e \"${PATH//:/\n}\""
+alias reload="source $HOME/.zshrc"
+#alias ll="ls -lsa --color"
+alias ll="exa -lga --icons"
+alias llt="exa -1 --icons --tree --level=1"
+
+# Laravel specific shortcuts
+alias a="php artisan"
+alias tinker="a tinker"
+alias dbfresh="a migrate:fresh --seed"
+alias test="a test"
+alias pest="./vendor/bin/pest"
+alias pint="./vendor/bin/pint --dirty"
+
+# Composer & NPM shortcuts
+alias dump="composer dump"
+alias refresh="rm -rf vendor/ composer.lock && composer i"
+alias reset="rm -rf node_modules/ package-lock.json && pnpm install"
+alias dev="npm run dev"
+alias prod="npm run prod"
+
+# Git shortcuts
+alias gs="git status"
+alias gc="git checkout"
+alias gb="git checkout -b"
+alias gl="git log --oneline --decorate --color"
+alias push="git push"
+alias pull="git pull"
+
+# For local services
+alias services="sudo service --status-all"
+alias startphp="sudo service $(get_phpfpm) start"
+alias stopphp="sudo service $(get_phpfpm) stop"
+alias startnginx="sudo service nginx start"
+alias stopnginx="sudo service nginx stop"
+alias startdb="sudo service postgresql start"
+alias stopdb="sudo service postgresql stop"
+alias startredis="sudo service redis-server start"
+alias stopredis="sudo service redis-server stop"
+alias server_start="startphp && startnginx && startdb && startredis"
+alias server_stop="stopphp && stopnginx && stopdb && stopredis"
