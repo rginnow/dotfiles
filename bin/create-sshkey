@@ -1,0 +1,13 @@
+#!/bin/bash
+
+SSH_DIR=~/.ssh/
+
+read -rp "Enter email to use: " email
+read -rp "Enter new key name: " keyname
+
+echo " -- Creating new SSH key $keyname for $email --"
+ssh-keygen -t ed25519 -C "$email" -f "$SSH_DIR$keyname" -P "" -q
+ssh-add "$SSH_DIR$keyname"
+
+echo " -- Public key -- "
+cat "$SSH_DIR$keyname.pub"
