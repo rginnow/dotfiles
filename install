@@ -26,7 +26,7 @@ else
 fi
 
 # Install composer if not already installed
-if [ ! -f "$HOME/bin/composer"]; then
+if [ ! -f "$HOME/bin/composer" ]; then
     sh "$DOTFILES/scripts/install-composer.sh"
 else
     echo "Composer is already installed!"
