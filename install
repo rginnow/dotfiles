@@ -18,8 +18,18 @@ ln -s "$DOTFILES/bin" "$HOME/bin"
 # When we have bin/local scripts we want, use this symlink
 #ln -sf "$DOTFILES/bin/local/*" "$HOME/.local/bin"
 
+# Install Oh-My-ZSH if not already installed
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+else
+    echo "Oh My ZSH is already installed!"
+fi
+
+# Install composer if not already installed
+if [ ! -f "$HOME/bin/composer"]; then
+    sh "$DOTFILES/scripts/install-composer.sh"
+else
+    echo "Composer is already installed!"
 fi
 
 sh "$DOTFILES/zsh/install_plugins.sh"
