@@ -1,19 +1,19 @@
 # A hack to fix clock drift on WSL
-update_clock () {
-    echo '[ROOT] Updating clock (sudo hwclock --hctosys)'
-    sudo hwclock -s
-    sudo ntpdate time.windows.com
-}
+#update_clock () {
+#    echo '[ROOT] Updating clock (sudo hwclock --hctosys)'
+#    sudo hwclock -s
+#    sudo ntpdate time.windows.com
+#}
 
 # Needed if using multiple version of PHP
-get_phpfpm () {
-    unset x
-    x=$(php -v | awk '{ print $2 }' | grep "8" | cut -b 1-3)
-    echo "php$x-fpm"
-}
+#get_phpfpm () {
+#    unset x
+#    x=$(php -v | awk '{ print $2 }' | grep "8" | cut -b 1-3)
+#    echo "php$x-fpm"
+#}
 
 # Global stuff
-alias vim=nvim
+#alias vim=nvim
 alias zshconf="vim ~/.zshrc"
 alias ohmyzsh="vim ~/.oh-my-zsh"
 alias showpath="echo -e \"${PATH//:/\n}\""
