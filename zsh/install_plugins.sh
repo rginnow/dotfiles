@@ -5,6 +5,7 @@ ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
 POWERLEVEL10K="$ZSH_CUSTOM/themes/powerlevel10k"
 ZSH_AUTOSUGGEST="$ZSH_CUSTOM/plugins/zsh-autosuggestions"
 ZSH_SYNTAX="$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+ZSH_EXA="$ZSH_CUSTOM/plugins/zsh-exa"
 
 if [ ! -d "$POWERLEVEL10K" ]; then
     git clone https://github.com/romkatv/powerlevel10k.git "$ZSH_CUSTOM/themes/powerlevel10k"
@@ -22,4 +23,10 @@ if [ ! -d "$ZSH_SYNTAX" ]; then
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
 else
     echo "Syntax Highlighting already installed!"
+fi
+
+if [ ! -d "$ZSH_EXA" ]; then
+    git clone https://github.com/ptavares/zsh-exa "$ZSH_CUSTOM/plugins/zsh-exa"
+else
+    echo "Exa already installed!"
 fi
