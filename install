@@ -32,4 +32,12 @@ else
     echo "Composer is already installed!"
 fi
 
+# Install eza (replacement for exa)
+if [ ! -d "$HOME/bin/local/eza" ]; then
+    git clone https://github.com/eza-community/eza.git "$HOME/bin/local/eza"
+    echo 'export FPATH="$HOME/bin/local/eza/completions/zsh:$FPATH"' >> ~/.zshrc
+else
+    echo "Eza is already installed!"
+fi
+
 sh "$DOTFILES/zsh/install_plugins.sh"
