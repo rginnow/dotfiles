@@ -1,43 +1,37 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 DOTFILES=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
-# ZSH configs
-ln -sf "$DOTFILES/zsh/aliases" "$HOME/.aliases"
+# ZSH
 ln -sf "$DOTFILES/zsh/zshrc" "$HOME/.zshrc"
+ln -sf "$DOTFILES/zsh/aliases" "$HOME/.aliases"
 ln -sf "$DOTFILES/zsh/p10k.zsh" "$HOME/.p10k.zsh"
 
-# Git configs
+# Neovim
+rm -rf "$HOME/.config/nvim"
+ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
+
+# Kitty
+rm -rf "$HOME/.config/kitty"
+ln -sf "$DOTFILES/kitty" "$HOME/.config/kitty"
+
+# Tmux
+rm -rf "$HOME/.tmux.conf"
+ln -sf "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
+
+# Git
 ln -sf "$DOTFILES/git/gitconfig" "$HOME/.gitconfig"
 ln -sf "$DOTFILES/git/gitignore_global" "$HOME/.gitignore_global"
 
-# Install custom bin scripts
-rm -rf "{$HOME/bin}"
-ln -s "$DOTFILES/bin" "$HOME/bin"
+# Scripts
+rm -rf "{$HOME/.local/bin}"
+ln -s "$DOTFILES/bin" "$HOME/.local/bin"
 
-# When we have bin/local scripts we want, use this symlink
-#ln -sf "$DOTFILES/bin/local/*" "$HOME/.local/bin"
-
-# Install Oh-My-ZSH if not already installed
+# Oh My ZSH
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 else
     echo "Oh My ZSH is already installed!"
-fi
-
-# Install composer if not already installed
-if [ ! -f "$HOME/bin/composer" ]; then
-    sh "$DOTFILES/scripts/install-composer.sh"
-else
-    echo "Composer is already installed!"
-fi
-
-# Install eza (replacement for exa)
-if [ ! -d "$HOME/bin/local/eza" ]; then
-    git clone https://github.com/eza-community/eza.git "$HOME/bin/local/eza"
-    echo 'export FPATH="$HOME/bin/local/eza/completions/zsh:$FPATH"' >> ~/.zshrc
-else
-    echo "Eza is already installed!"
 fi
 
 sh "$DOTFILES/zsh/install_plugins.sh"
