@@ -1,5 +1,5 @@
 # Global stuff
-alias vim=nvim
+alias vim="nvim"
 alias zshconf="vim ~/.zshrc"
 alias ohmyzsh="vim ~/.oh-my-zsh"
 alias showpath="echo -e \"${PATH//:/\n}\""
@@ -15,25 +15,61 @@ alias lld='eza -lghamUF --git --icons --group-directories-first'
 
 # Laravel specific shortcuts
 alias a="artisan"
-alias tinker="a tinker"
-alias migrate="a migrate"
-alias mf="migrate:fresh"
-alias mfs="mf --seed"
-alias test="a test"
+#alias tinker="a tinker"
+alias tinker="herd tinker"
+alias migrate="artisan migrate"
+alias mf="artisan migrate:fresh"
+alias mfs="artian migrate:fresh --seed"
+alias test="artisan test"
 
 # Composer & NPM shortcuts
 #alias npm="pnpm"
 alias dump="composer dump"
-alias refresh="rm -rf ./vendor/ ./composer.lock && composer i"
-alias reset="rm -rf ./node_modules/ ./package-lock.json && npm install"
+alias cfresh="rm -rf ./vendor/ ./composer.lock && composer i"
+alias nfresh="rm -rf ./node_modules/ ./package-lock.json && npm install"
 alias dev="npm run dev"
 alias prod="npm run prod"
 
+# Chrome
+alias chrome="$HOME/chrome/mac_arm-130.0.6723.91/chrome-mac-arm64/Google\ Chrome\ for\ Testing.app/Contents/MacOS/Google\ Chrome\ for\ Testing"
+
 # Git shortcuts
 alias g="git"
-alias gs="g s"
-alias co="g checkout"
-alias br="g checkout -b"
-alias gl="g log --oneline --decorate --color"
+alias gs="git s"
+alias co="git checkout"
+alias br="git checkout -b"
+alias gl="git log --oneline --decorate --color"
 alias push="git push"
 alias pull="git pull"
+nah() {
+    git reset -- hard
+
+    if [[ $1 == "-f" ]]; then
+        git clean -df
+    fi
+}
+
+# Directory shortcuts
+alias projects="cd $HOME/Code"
+alias sites="cd $HOME/Herd"
+alias library="cd $HOME/Library"
+alias dotfiles="cd $DOTFILES"
+
+# File management with prompts
+alias mv="mv -i"
+alias rm="rm -i"
+alias cp="cp -i"
+alias ln="ln -i"
+alias mkdir="mkdir -pv"
+
+# Environment variables and system info
+alias genv="printenv | grep -i"
+alias path="echo -e ${PATH//:/\\n} | less"
+alias now='date +"%T"'
+alias nowd='date +"%Y-%m-%d"'
+alias df="df -h"
+alias duse="du -sh * 2>/dev/null"
+
+# Quick networking checks
+alias ping="ping -c 5"
+alias fastping="ping -c 100 -i 0.2"

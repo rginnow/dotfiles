@@ -2,36 +2,61 @@
 
 DOTFILES=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
+echo "Starting installation..."
+
+# Homebrew
+if test ! $(which brew); then
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    echo "Homebrew installed."
+else
+    echo "Homebrew is already installed. Continuing..."
+fi
+
+brew update
+brew tap homebrew/bundle
+brew bundle --file="$DOTFILES/Brewfile"
+
 # ZSH
+echo "Linking ZSH files..."
 ln -sf "$DOTFILES/zsh/zshrc" "$HOME/.zshrc"
 ln -sf "$DOTFILES/zsh/aliases" "$HOME/.aliases"
 ln -sf "$DOTFILES/zsh/p10k.zsh" "$HOME/.p10k.zsh"
 
 # Neovim
+echo "Linking Neovim files..."
 rm -rf "$HOME/.config/nvim"
 ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
 
 # Kitty
+echo "Linking Kitty files..."
 rm -rf "$HOME/.config/kitty"
 ln -sf "$DOTFILES/kitty" "$HOME/.config/kitty"
 
 # Tmux
+echo "Linking Tmux files..."
 rm -rf "$HOME/.tmux.conf"
 ln -sf "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
 
 # Git
+echo "Linking Git files..."
 ln -sf "$DOTFILES/git/gitconfig" "$HOME/.gitconfig"
 ln -sf "$DOTFILES/git/gitignore_global" "$HOME/.gitignore_global"
 
 # Scripts
+echo "Linking custom bin scripts..."
 rm -rf "{$HOME/.local/bin}"
 ln -s "$DOTFILES/bin" "$HOME/.local/bin"
 
 # Oh My ZSH
+echo "Installing Oh My ZSH..."
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    echo "Oh My ZSH installed."
 else
     echo "Oh My ZSH is already installed!"
 fi
 
+echo "Installing Oh My ZSH plugins..."
 sh "$DOTFILES/zsh/install_plugins.sh"
+
+echo "Installation complete!"

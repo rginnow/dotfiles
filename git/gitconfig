@@ -1,105 +1,103 @@
 [alias]
-	; misspellings
-	pul = pull
-	pus = push
+    ; misspellings
+    pul = pull
+    pus = push
 
-	; add
-	a = add
-	aa = add --all
-	ap = add --patch
-	au = add --update
+    ; add
+    a = add
+    aa = add --all
+    ap = add --patch
+    au = add --update
 
-	; branch
-	b = branch
-	ba = branch --all
-	bd = branch --delete
-	bD = branch --delete --force
-	bm = branch --move
-	bM = branch --move --force
+    ; branch
+    b = branch
+    ba = branch --all
+    bd = branch --delete
+    bD = branch --delete --force
+    bm = branch --move
+    bM = branch --move --force
 
-	; commit
-	c = commit
-	ca = commit --amend
-	ci = commit --interactive
-	cm = commit --message
-	cv = commit --verbose
+    ; commit
+    c = commit
+    ca = commit --amend
+    ci = commit --interactive
+    cm = commit --message
+    cv = commit --verbose
 
-	;checkout
-	co = checkout
-	cob = checkout -b
+    ;checkout
+    co = checkout
+    cob = checkout -b
 
-	;diff
-	d = diff
-	dc = diff --cached
-	ds = diff --staged
-	dw = diff --word-diff
+    ;diff
+    d = diff
+    dc = diff --cached
+    ds = diff --staged
+    dw = diff --word-diff
 
-	;flow
-	f = flow
-	ff = flow feature
-	ffs = flow feature start
-	ffc = flow feature commit
-	ffp = flow feature publish
+    ;flow
+    f = flow
+    ff = flow feature
+    ffs = flow feature start
+    ffc = flow feature commit
+    ffp = flow feature publish
 
-	;log
-	l = log
+    ;log
+    l = log
     lg = log --graph
     lk = log --graph --topo-order --abbrev-commit --date=short --decorate --all --boundary --pretty=format:'%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %Cblue[%cn]%Creset'
     lo = log --oneline
     lp = log --patch
     lt = log --topo-order
-	last = log -1 HEAD --stat
+    last = log -1 HEAD --stat
 
-	;status
-	s = status --short --branch
+    ;status
+    s = status --short --branch
 
-	;branch lists
-	branches = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
-	branch-list-merged = "!git branch --merged develop | grep -v -E '(develop|origin|master)'"
-    branch-delete-merged = "!git branch-list-merged | xargs git branch -d"
+    ;branch lists
+    branches = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
+    branch-list-merged = "!git branch --merged develop | grep -v -E '(develop|origin|master)'"
+    ;branch-delete-merged = "!git branch-list-merged | xargs git branch -d"
+	branch-unpublished = "!git branch --format '%(refname:short) %(upstream)' | awk '{if (!$2) print $1;}'"
 
-	;undo
-	unstage = reset HEAD
-	undo-commit = reset HEAD~1 --mixed
-	set-upstream = !git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`
+    ;undo
+    unstage = reset HEAD
+    undo-commit = reset HEAD~1 --mixed
+    set-upstream = !git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`
 
-	;wip
-	wip = !git add --all && git commit -m 'wip'
+    ;wip
+    wip = !git add --all && git commit -m 'wip'
 [color]
-	ui = auto
+    ui = auto
 [commit]
-	gpgsign = true
+    gpgsign = true
 [core]
-	editor = nvim
-	excludesfile = ~/.gitignore_global
-	pager = delta
+    editor = nvim
+    excludesfile = ~/.gitignore_global
+    pager = delta
 [diff]
-	tool = vimdiff
+    tool = vimdiff
 [fetch]
-	prune = true
+    prune = true
 [help]
-	autocorrect = 10
+    autocorrect = 10
 [include]
     path = ~/.gitconfig_local
 [push]
-	default = current
+    default = current
 [rerere]
-	enabled = true
+    enabled = true
 [merge]
-	conflictstyle = diff3
+    conflictstyle = diff3
 [interactive]
-	diffFilter = delta --color-only
+    diffFilter = delta --color-only
 [delta]
-	line-numbers = true
-	syntax-theme = Dracula
-	plus-style = "syntax #2A363B"
+    line-numbers = true
+    syntax-theme = Dracula
+    plus-style = "syntax #2A363B"
     plus-emph-style = "syntax #2D4E45"
     minus-style = "syntax #3B2C37"
     minus-emph-style = "syntax #613038"
 [pull]
-	rebase = false
+    rebase = false
 [init]
-	defaultBranch = main
-[user]
-	;GPG Signing Key
-	;signingkey = 
+    defaultBranch = main

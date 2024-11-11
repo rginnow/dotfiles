@@ -6,6 +6,38 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 #--------------------------------------------------------------------------
+# Configuration
+#--------------------------------------------------------------------------
+
+typeset -U path cdpath fpath
+path=(
+    $HOME/Library/Application\ Support/Herd/bin
+    $HOME/.local/bin
+    $HOME/.local/bin/local
+    $HOME/.composer/vendor/bin
+    /Users/Shared/Herd/services/postgresql/17/bin
+    /opt/homebrew/bin
+    /usr/local/bin
+    ./vendor/bin
+    $path
+)
+
+export DOTFILES=$HOME/Code/rginnow/dotfiles
+export BROWSER="/Applications/Brave\ Browser.app"
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+  export GIT_EDITOR="vim"
+else
+  export EDITOR='nvim'
+  export GIT_EDITOR="nvim"
+fi
+
+zstyle ':omz:update' mode auto
+zstyle ':omz:update' frequency 1
+
+#--------------------------------------------------------------------------
 # Oh My Zsh
 #--------------------------------------------------------------------------
 
@@ -36,51 +68,39 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 #--------------------------------------------------------------------------
-# Configuration
-#--------------------------------------------------------------------------
-
-typeset -U path cdpath fpath
-path=(
-    $HOME/Library/Application\ Support/Herd/bin
-    $HOME/Lib
-    $HOME/.local/bin
-    $HOME/.composer/vendor/bin
-#    $HOME/.nvm/versions/node/v*/bin
-    /opt/homebrew/bin
-    /usr/local/bin
-    ./vendor/bin
-    $path
-)
-
-export HERD_PHP_83_INI_SCAN_DIR="/Users/ryanginnow/Library/Application Support/Herd/config/php/83/"
-
-export DOTFILES=$HOME/Code/rginnow/dotfiles
-export BROWSER="/Applications/Brave\ Browser.app"
-
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-  export GIT_EDITOR="vim"
-else
-  export EDITOR='nvim'
-  export GIT_EDITOR="nvim"
-fi
-
-zstyle ':omz:update' mode auto
-zstyle ':omz:update' frequency 1
-
-
-#--------------------------------------------------------------------------
 # Aliases
 #--------------------------------------------------------------------------
+
 source ~/.aliases
-
-# NVM SETTINGS
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 echo -en "\e[2 q"
+
+#--------------------------------------------------------------------------
+# Herd
+#--------------------------------------------------------------------------
+# Herd injected PHP binary.
+export PHP_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/":$PHP_INI_SCAN_DIR
+
+# Herd injected PHP 8.0 configuration.
+export HERD_PHP_80_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/80/"
+
+# Herd injected PHP 8.1 configuration.
+export HERD_PHP_81_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/81/"
+
+# Herd injected PHP 8.2 configuration.
+export HERD_PHP_82_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/82/"
+
+# Herd injected PHP 8.3 configuration.
+export HERD_PHP_83_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/83/"
+
+# Herd injected NVM configuration
+export NVM_DIR="$HOME/Library/Application Support/Herd/config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+[[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && builtin source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
+
+
+# Herd injected PHP 8.3 configuration.
+export HERD_PHP_83_INI_SCAN_DIR="/Users/ryanginnow/Library/Application Support/Herd/config/php/83/"
