@@ -78,6 +78,8 @@
     tool = vimdiff
 [fetch]
     prune = true
+[gpg]
+    program = gpg
 [help]
     autocorrect = 10
 [include]

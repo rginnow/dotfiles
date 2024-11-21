@@ -24,6 +24,7 @@ path=(
 
 export DOTFILES=$HOME/Code/rginnow/dotfiles
 export BROWSER="/Applications/Brave\ Browser.app"
+export GIT_TTY=$(tty)
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -83,6 +84,9 @@ echo -en "\e[2 q"
 # Herd injected PHP binary.
 export PHP_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/":$PHP_INI_SCAN_DIR
 
+# Herd injected PHP 7.4 configuration.
+export HERD_PHP_74_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/74/"
+
 # Herd injected PHP 8.0 configuration.
 export HERD_PHP_80_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/80/"
 
@@ -101,6 +105,6 @@ export NVM_DIR="$HOME/Library/Application Support/Herd/config/nvm"
 
 [[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && builtin source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
 
-
-# Herd injected PHP 8.3 configuration.
-export HERD_PHP_83_INI_SCAN_DIR="/Users/ryanginnow/Library/Application Support/Herd/config/php/83/"
+if [[ $- == *i* && $0 == '-zsh' ]]; then
+    sh $DOTFILES/zsh/motd.sh
+fi
