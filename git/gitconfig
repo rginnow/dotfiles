@@ -76,6 +76,7 @@
     pager = delta
 [diff]
     tool = vimdiff
+    colorMoved = zebra
 [fetch]
     prune = true
 [gpg]
@@ -86,9 +87,12 @@
     path = ~/.gitconfig_local
 [push]
     default = current
+[rebase]
+    autoStash = true
 [rerere]
     enabled = true
 [merge]
+    autoStash = true
     conflictstyle = diff3
 [interactive]
     diffFilter = delta --color-only
@@ -100,6 +104,6 @@
     minus-style = "syntax #3B2C37"
     minus-emph-style = "syntax #613038"
 [pull]
-    rebase = false
+    rebase = true
 [init]
     defaultBranch = main
