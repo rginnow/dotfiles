@@ -398,6 +398,11 @@
         local branch=$match[2]
         local ticket=$match[3]
         where=$folder/$ticket
+      elif [[ $VCS_STATUS_LOCAL_BRANCH == (#b)([^/]##)/([a-z]##-[0-9]##)-(?*) ]]; then
+        local folder=$match[1]
+        local ticket=$match[2]
+        local branch=$match[3]
+        where=$folder/$ticket
       elif [[ $VCS_STATUS_LOCAL_BRANCH == (#b)([^/]##)/([^/]##)/(?*) ]]; then
         local folder=$match[1]
         local epic=$match[2]
