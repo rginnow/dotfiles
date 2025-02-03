@@ -37,6 +37,7 @@ cask 'spotify'
 cask 'tableplus'
 cask 'tailscale'
 cask 'tinkerwell'
+cask 'visual-studio-code'
 
 # Fonts
 cask 'font-cascadia-code'
