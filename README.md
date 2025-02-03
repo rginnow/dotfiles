@@ -13,7 +13,7 @@ These are my personal dotfiles for MacOS, based on multiple sources like [Jess A
 
 ## Contents
 
-- [Brewfile](Brewfile): A list of software I need installed via Homebrew.
+- [Brewfile](Brewfile): A list of software to be installed via Homebrew.
 - [zsh](zsh): My custom ZSH config with aliases, a Powerlevel10k theme, and plugins.
-- [kitty](kitty): A very minimal kitty terminal config from Jess Archer.
-- [tmux](tmux): A basic tmux config from Jess Archer.
+- [kitty](kitty): A very minimal kitty terminal config (based off Jess Archer's dotfiles).
+- [tmux](tmux): A basic tmux config (based off Jess Archer's dotfiles).
