@@ -81,8 +81,8 @@ for color in {41..46} ; do
 done
 printf "\e[0m \n\n"
 
-curl -s "https://wttr.in/jax?u0"
-printf "\n"
+#curl -s "https://wttr.in/palm+coast?u0"
+#printf "\n"
 
 # System Information Section
 printf "System Info\n"
