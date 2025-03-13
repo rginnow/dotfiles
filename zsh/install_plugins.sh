@@ -28,5 +28,5 @@ fi
 if [ ! -d "$ARTISAN" ]; then
     git clone https://github.com/jessarcher/zsh-artisan.git "$ZSH_CUSTOM/plugins/artisan"
 else
-    echo "ZSHArtisan Plugin already installed!"
+    echo "ZSH Artisan Plugin already installed!"
 fi

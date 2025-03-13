@@ -16,6 +16,7 @@ path=(
     $HOME/.local/bin
     $HOME/.local/bin/local
     $HOME/.composer/vendor/bin
+    $HOME/.bun/bin
     /Users/Shared/Herd/services/postgresql/17/bin
     /opt/homebrew/bin
     /usr/local/bin
@@ -25,7 +26,8 @@ path=(
 
 export GPG_TTY=$TTY
 export DOTFILES=$HOME/Code/rginnow/dotfiles
-export BROWSER="/Applications/Brave\ Browser.app"
+export BROWSER="/Applications/Firefox.app"
+export BUN_INSTALL="$HOME/.bun"
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -64,20 +66,16 @@ plugins=(
     httpie
     npm
     tmux
+    zoxide
     zsh-autosuggestions
     zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh
 source ~/.aliases
+
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-#--------------------------------------------------------------------------
-# MOTD
-#--------------------------------------------------------------------------
-if [[ $- == *i* && $0 == '-zsh' ]]; then
-    sh $DOTFILES/zsh/motd.sh
-fi
 
 #--------------------------------------------------------------------------
 # Herd
@@ -87,10 +85,33 @@ fi
 export NVM_DIR="$HOME/Library/Application Support/Herd/config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
+# Herd ZSH completions
 [[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && builtin source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
 
-# Herd injected PHP 8.2 configuration.
-export HERD_PHP_82_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/82/"
+
+#--------------------------------------------------------------------------
+# Bun
+#--------------------------------------------------------------------------
+
+# bun completions
+[[ -s "/Users/rginnow/.bun/_bun" ]] && source "/Users/rginnow/.bun/_bun"
+
+
+#--------------------------------------------------------------------------
+# MOTD
+#--------------------------------------------------------------------------
+if [[ $- == *i* && $0 == '-zsh' ]]; then
+    sh $DOTFILES/zsh/motd.sh
+fi
+
 
 # Herd injected PHP 8.3 configuration.
-export HERD_PHP_83_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/83/"
+export HERD_PHP_83_INI_SCAN_DIR="/Users/rginnow/Library/Application Support/Herd/config/php/83/"
+
+
+# Herd injected PHP 8.2 configuration.
+export HERD_PHP_82_INI_SCAN_DIR="/Users/rginnow/Library/Application Support/Herd/config/php/82/"
+
+
+# Herd injected PHP 7.4 configuration.
+export HERD_PHP_74_INI_SCAN_DIR="/Users/rginnow/Library/Application Support/Herd/config/php/74/"
