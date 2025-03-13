@@ -41,6 +41,11 @@ echo "Linking Tmux files..."
 rm -rf "$HOME/.tmux.conf"
 ln -sf "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
 
+# Bat
+echo "Linking Bat files..."
+rm -rf "$HOME/.config/bat"
+ln -sf "$DOTFILES/bat" "$HOME/.config/bat"
+
 # Git
 echo "Linking Git files..."
 ln -sf "$DOTFILES/git/gitconfig" "$HOME/.gitconfig"
