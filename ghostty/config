@@ -1,0 +1,40 @@
+#--------------------------------------------------------------------------
+# Ghostty Terminal Settings
+# Based on: https://github.com/michaeldyrynda/dotfiles/blob/main/ghostty/config
+# Ghostty Config Reference: https://ghostty.org/docs/config/reference
+#--------------------------------------------------------------------------
+
+# themeing and colors
+theme=dark:Snazzy,light:catppuccin-frappe
+background-opacity=0.9
+background-blur-radius=true
+cursor-style-blink=false
+
+# cell adjustments
+adjust-cell-height=20%
+
+# window settings
+window-decoration=none
+window-padding-x=5
+window-padding-y=5
+window-padding-balance=true
+window-height=41
+window-width=201
+
+# font settings
+font-family='FiraCode Nerd Font Regular'
+font-family-bold='FiraCode Nerd Font Bold'
+font-family-italic='FiraCode Nerd Font Italic'
+font-family-bold-italic='FiraCode Nerd Font Bold Italic'
+font-size=15
+
+# macos settings
+macos-icon=retro
+macos-option-as-alt=true
+macos-titlebar-style=hidden
+
+# other
+auto-update=check
+clipboard-trim-trailing-spaces=true
+copy-on-select=true
+scrollback-limit=10_000
