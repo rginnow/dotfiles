@@ -1,4 +1,58 @@
-# --- Command Overrides ---
+# Generic
+alias vim="nvim"
+alias zshconf="vim ~/.zshrc"
+alias ohmyzsh="vim ~/.oh-my-zsh"
+alias reload="omz reload"
+alias copy="pbcopy < "
+alias please="sudo !!"
+alias dud="du -d 1 -h"
+alias fresh="rm -rf node_modules && rm -rf vendor && npm install && composer install"
+
+# Applications
+alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+
+# Artisan
+alias a="artisan"
+alias tinker="herd tinker"
+alias horizon="herd horizon"
+alias solo="php artisan solo"
+alias migrate="artisan migrate"
+alias mf="artisan migrate:fresh"
+alias mfs="artian migrate:fresh --seed"
+alias test="artisan test"
+
+# Composer
+alias co="composer dumpautoload -o"
+alias ci="composer install --prefer-dist"
+alias cu="composer update"
+alias cr="composer require"
+alias cgr="composer global require"
+alias cgu="composer global update"
+
+# Git
+alias g="git"
+alias ga="git add"
+alias gb="git checkout -b"
+alias gc="git commit"
+alias gd="git diff"
+alias gl="git log --oneline --decorate --color"
+alias glr="git pull --rebase"
+alias gp="git push"
+alias gpf="git push --force"
+alias grc="git rebase --continue"
+alias gs="git status"
+
+alias amend="git add . && git commit --amend --no-edit"
+alias commit="git add . && git commit -m"
+alias nah="git reset --hard && git clean -df"
+alias pop="git stash pop"
+alias resolve="git add . && git commit --no-edit"
+alias squash="git rebase -i HEAD~"
+alias stash="git stash -u"
+alias switch="git switch"
+alias yoink="git cherry-pick"
+
+# --- Default Command Overrides ---
 # Override default commands with better alternatives
 
 # TLDR (better man)
@@ -29,59 +83,14 @@ alias fzfp='fzf --style minimal --tmux bottom,90%,60% --preview "fzf-preview.sh 
 # ZOXIDE (better cd)
 # adds a lot of features to cd, like bookmarks, history, and more
 
-# Global stuff
-alias vim="nvim"
-alias zshconf="vim ~/.zshrc"
-alias ohmyzsh="vim ~/.oh-my-zsh"
-alias reload="omz reload"
-alias copy="pbcopy < "
-
-# Applications
-alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
-
-# Chrome for Testing (on Apple Silicon)
-#alias chrome="$HOME/chrome/mac_arm-130.0.6723.91/chrome-mac-arm64/Google\ Chrome\ for\ Testing.app/Contents/MacOS/Google\ Chrome\ for\ Testing"
-
 # Listings with Eza (previously exa, replaces ls)
-alias ll="eza -lghamUF --git --icons=always"
-alias llt="eza -gTL 2 --git --icons=always"
+alias ls="eza --color=always --icons=always --long --git --no-time --no-user --no-permissions --no-filesize"
+alias ll="eza -lghamUF --git --icons=always" # list view: long, group, headers, all, modified, created, file indicators
+alias llt="eza -gTL 2 --git --icons=always"  # tree view: group, tree, 2 levels deep
 
 # Sort listings
 alias llm="eza -lghamUF --git --icons=always --sort=modified"
 alias lld="eza -lghamUF --git --icons=always --group-directories-first"
-
-# Laravel specific shortcuts
-alias a="artisan"
-#alias tinker="a tinker"
-alias tinker="herd tinker"
-alias migrate="artisan migrate"
-alias mf="artisan migrate:fresh"
-alias mfs="artian migrate:fresh --seed"
-alias test="artisan test"
-
-# Composer & NPM shortcuts
-#alias npm="pnpm"
-alias dump="composer dump"
-alias cfresh="rm -rf ./vendor/ ./composer.lock && composer i"
-alias nfresh="rm -rf ./node_modules/ ./package-lock.json && npm install"
-alias dev="npm run dev"
-alias prod="npm run prod"
-
-# Git shortcuts
-alias g="git"
-alias gs="git s"
-alias co="git checkout"
-alias br="git checkout -b"
-alias gl="git log --oneline --decorate --color"
-alias push="git push"
-alias pull="git pull"
-nah() {
-    git reset -- hard
-
-    if [[ $1 == "-f" ]]; then
-        git clean -df
-    fi
-}
 
 # Directory shortcuts
 alias projects="cd $HOME/Code"
@@ -108,3 +117,10 @@ alias duse="du -sh * 2>/dev/null"
 # Quick networking checks
 alias ping="ping -c 5"
 alias fastping="ping -c 100 -i 0.2"
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias localip="ipconfig getifaddr en0"
+
+if command -v fzf &> /dev/null
+then
+    alias preview="fzf --preview 'bat --color \"always\" {}'"
+fi
