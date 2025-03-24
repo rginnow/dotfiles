@@ -3,38 +3,44 @@ tap 'homebrew/bundle'
 tap 'oven-sh/bun'
 
 # Binaries
-#brew '1password-cli'
-brew 'ansible'
-brew 'bat'
-brew 'bun'
+brew 'ansible'  # Hardware configuration automation
+brew 'bat'      # A cat(1) clone with wings.
+brew 'boxes'    # Draw boxes around text
+brew 'bun'      # Superfast javascript runtime/bundler/pm
 brew 'ca-certificates'
-brew 'cowsay'
-brew 'curl'
-brew 'duf'
-brew 'eza'
-brew 'fzf'
-brew 'gh'
-brew 'gnupg'
-brew 'httpie'
-brew 'lolcat'
-brew 'mackup'
-brew 'neovim'
-brew 'sqlite'
-brew 'tmux'
-brew 'zoxide'
+brew 'cowsay'   # The configurable talking cow
+brew 'curl'     # get a file from a server (latest release version)
+brew 'direnv'   # Environment switcher for the shell
+brew 'duf'      # Disk Usage/Free Utility
+brew 'eza'      # Easy Zoxide Alias
+brew 'fastfetch'# Fast system info script
+brew 'fzf'      # Fuzzy finder for your shell
+brew 'gh'       # GitHub CLI
+brew 'git-delta'# Syntax highlighting pager for git and diff output
+brew 'gnupg'    # GNU Pretty Good Privacy (PGP)
+brew 'lolcat'   # Rainbows and unicorns!
+brew 'mackup'   # Mac settings backup
+brew 'neovim'   # Extensible and agile vim fork
+brew 'ripgrep'  # Better grep
+brew 'sqlite'   # CLI for sqlite
+brew 'starship' # Cross-shell customizable terminal prompt
+brew 'tlrc'     # TLDR.sh Rust Client
+brew 'tmux'     # Terminal multiplexer
+brew 'xh'       # Fast & friendly HTTP client
+brew 'zoxide'   # A faster way to navigate your filesystem
 
 # Applications
-cask '1password'
-cask 'brave-browser'
-cask 'cursor'
+# cask '1password'
+# cask 'brave-browser'
+# cask 'cursor'
 cask 'discord'
-cask 'figma'
+# cask 'figma'
 cask 'firefox'
-cask 'helo'
+cask 'ghostty'
+# cask 'helo'
 cask 'herd'
-cask 'httpie'
-cask 'insomnia'
-cask 'kitty'
+# cask 'insomnia'
+# cask 'kitty'
 cask 'linear-linear'
 cask 'logi-options+'
 cask 'logitech-g-hub'
