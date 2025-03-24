@@ -57,9 +57,9 @@ alias yoink="git cherry-pick"
 
 # TLDR (better man)
 # allows for example-based help instead of skimming a literal manual
-alias man="tldr -t base16"
-alias how="tldr -t base16"
-alias howto="tldr -t base16"
+alias man="tldr"
+alias how="tldr"
+alias howto="tldr"
 
 # DUF (better df)
 # filesystem disk space usage with a better interface

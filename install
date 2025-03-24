@@ -1,71 +1,115 @@
 #!/usr/bin/env sh
 
+# Set up some directory locations
 DOTFILES=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+STATE_HOME=${XDG_STATE_HOME:-$HOME/.local/state}
+CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
 
 echo "Starting installation..."
 
-# Artii Ruby Gem
+# Install the Artii Ruby Gem for some ASCII art stuff
 echo "Installing Artii Ruby Gem..."
 sudo gem install artii
 
-# Homebrew
-if test ! $(which brew); then
+# Install Homebrew
+if [ ! $(type brew &> /dev/null) ]; then
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     echo "Homebrew installed."
 else
     echo "Homebrew is already installed. Continuing..."
 fi
 
+# Update brew & get bundle support
 brew update
 brew tap homebrew/bundle
+
+# install all the brews!
 brew bundle --file="$DOTFILES/homebrew/Brewfile"
 
-# ZSH
-echo "Linking ZSH files..."
-ln -sf "$DOTFILES/zsh/zshrc" "$HOME/.zshrc"
-ln -sf "$DOTFILES/zsh/aliases" "$HOME/.aliases"
-ln -sf "$DOTFILES/zsh/p10k.zsh" "$HOME/.p10k.zsh"
+# TLRC (TLDR) config
+echo "Linking TLRC (TLDR) config..."
+rm -rf "$CONFIG_HOME/tldr"
+ln -sf "$DOTFILES/tldr" "$CONFIG_HOME/tldr"
 
 # Neovim
 echo "Linking Neovim files..."
-rm -rf "$HOME/.config/nvim"
-ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
+rm -rf "$CONFIG_HOME/nvim"
+ln -sf "$DOTFILES/nvim" "$CONFIG_HOME/nvim"
 
 # Kitty
 echo "Linking Kitty files..."
-rm -rf "$HOME/.config/kitty"
-ln -sf "$DOTFILES/kitty" "$HOME/.config/kitty"
+rm -rf "$CONFIG_HOME/kitty"
+ln -sf "$DOTFILES/kitty" "$CONFIG_HOME/kitty"
 
 # Tmux
 echo "Linking Tmux files..."
-rm -rf "$HOME/.tmux.conf"
-ln -sf "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
+rm -rf "$CONFIG_HOME/tmux"
+ln -sf "$DOTFILES/tmux" "$CONFIG_HOME/tmux"
 
 # Bat
 echo "Linking Bat files..."
-rm -rf "$HOME/.config/bat"
-ln -sf "$DOTFILES/bat" "$HOME/.config/bat"
+rm -rf "$CONFIG_HOME/bat"
+ln -sf "$DOTFILES/bat" "$CONFIG_HOME/bat"
 
 # Git
 echo "Linking Git files..."
-ln -sf "$DOTFILES/git/gitconfig" "$HOME/.gitconfig"
-ln -sf "$DOTFILES/git/gitignore_global" "$HOME/.gitignore_global"
+rm -rf "$CONFIG_HOME/git"
+ln -sf "$DOTFILES/git" "$CONFIG_HOME/git"
 
 # Scripts
 echo "Linking custom bin scripts..."
 rm -rf "{$HOME/.local/bin}"
 ln -s "$DOTFILES/bin" "$HOME/.local/bin"
 
-# Oh My ZSH
-echo "Installing Oh My ZSH..."
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
-    KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    echo "Oh My ZSH installed."
-else
-    echo "Oh My ZSH is already installed!"
-fi
+# ask if the user wants to install fish or zsh
+echo "Which shell would you like to use? (fish/zsh)"
+read -r SHELL
 
-echo "Installing Oh My ZSH plugins..."
-sh "$DOTFILES/zsh/install_plugins.sh"
+if [ "$SHELL" = "fish" ]; then
+    echo "Installing Fish shell..."
+    brew install fish --quiet
+    echo "Fish shell installed."
+
+    echo "Installing Starship Prompt..."
+    brew install starship --quiet
+    echo "Starship installed."
+
+    # Fish
+    echo "Linking Fish files..."
+    rm -rf "$CONFIG_HOME/fish"
+    ln -sf "$DOTFILES/fish" "$CONFIG_HOME/fish"
+elif [ "$SHELL" = "zsh" ]; then
+    echo "Linking ZSH files..."
+    ln -sf "$DOTFILES/zsh/zshrc" "$HOME/.zshrc"
+    ln -sf "$DOTFILES/zsh/aliases" "$HOME/.aliases"
+    ln -sf "$DOTFILES/zsh/p10k.zsh" "$HOME/.p10k.zsh"
+
+    # Check if ZSH shell is already installed
+    if [ ! $(type /bin/zsh &> /dev/null) ]; then
+        echo "ZSH shell found, continuing..."
+        continue
+    else
+        echo "Installing ZSH..."
+        brew install zsh --quiet
+        echo "ZSH shell installed."
+    fi
+
+    # Oh My ZSH
+    echo "Installing Oh My ZSH..."
+    if [ ! -d "$HOME/.oh-my-zsh" ]; then
+        KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+        echo "Oh My ZSH installed."
+    else
+        echo "Oh My ZSH is already installed!"
+    fi
+
+    echo "Installing Oh My ZSH plugins..."
+    sh "$DOTFILES/zsh/install_plugins.sh"
+else
+    echo "Invalid shell. No shell installed."
+    continue
+fi
 
 echo "Installation complete!"

@@ -1,2 +1,8 @@
 bin/composer
 bin/local/*
+git/config_local
+
+.fisher/
+fisher/
+fish_variables
+fishprof*.txt
