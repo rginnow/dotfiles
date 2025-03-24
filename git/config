@@ -4,21 +4,17 @@
     pus = push
 
     ; add
-    a = add
     aa = add --all
     ap = add --patch
     au = add --update
 
     ; branch
-    b = branch
-    ba = branch --all
     bd = branch --delete
-    bD = branch --delete --force
     bm = branch --move
-    bM = branch --move --force
+    delbr = branch -
+    current = !git branch | grep"^*" | awk '{ print $2 }'
 
     ; commit
-    c = commit
     ca = commit --amend
     ci = commit --interactive
     cm = commit --message
@@ -33,6 +29,9 @@
     dc = diff --cached
     ds = diff --staged
     dw = diff --word-diff
+
+    ;fetch
+    update = fetch
 
     ;flow
     f = flow
@@ -50,8 +49,17 @@
     lt = log --topo-order
     last = log -1 HEAD --stat
 
+    ;pull
+    down = pull
+
+    ;push
+    up = push
+
     ;status
     s = status --short --branch
+
+    ;stash
+    stashes = stash list
 
     ;branch lists
     branches = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
@@ -63,17 +71,25 @@
     unstage = reset HEAD
     undo-commit = reset HEAD~1 --mixed
     set-upstream = !git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`
-
-    ;wip
-    wip = !git add --all && git commit -m 'wip'
 [color]
     ui = auto
 [commit]
     gpgsign = true
 [core]
     editor = nvim
-    excludesfile = ~/.gitignore_global
+    excludesfile = ~/.config/git/gitignore
     pager = delta
+[delta]
+    ; delta detects terminal colors automatically; set one of these to disable auto-detection
+    ; dark = true
+    ; light = true
+    line-numbers = true
+    minus-emph-style = "syntax #613038"
+    minus-style = "syntax #3B2C37"
+    navigate = true  ; use n and N to move between diff sections
+    plus-emph-style = "syntax #2D4E45"
+    plus-style = "syntax #2A363B"
+    ; syntax-theme = Dracula
 [diff]
     tool = vimdiff
     colorMoved = zebra
@@ -84,26 +100,29 @@
 [help]
     autocorrect = 10
 [include]
-    path = ~/.gitconfig_local
+    path = ~/.config/git/config_local
+[init]
+    defaultBranch = main
+[interactive]
+    diffFilter = delta --color-only
+[merge]
+    autoStash = true
+    conflictstyle = zdiff3
+[pull]
+    rebase = true
 [push]
     default = current
 [rebase]
     autoStash = true
 [rerere]
     enabled = true
-[merge]
-    autoStash = true
-    conflictstyle = diff3
-[interactive]
-    diffFilter = delta --color-only
-[delta]
-    line-numbers = true
-    syntax-theme = Dracula
-    plus-style = "syntax #2A363B"
-    plus-emph-style = "syntax #2D4E45"
-    minus-style = "syntax #3B2C37"
-    minus-emph-style = "syntax #613038"
-[pull]
-    rebase = true
-[init]
-    defaultBranch = main
+[url "https://github.com/"]
+    insteadOf = gh:
+[url "https://gist.github.com/"]
+    insteadOf = gist:
+[url "https://bitbucket.org/"]
+    insteadOf = bb:
+[url "https://gitlab.com/"]
+    insteadof = gl:
+[web]
+    browser = firefox
