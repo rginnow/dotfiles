@@ -32,7 +32,7 @@ shell-integration-features=no-cursor
 background-blur-radius=true
 background-opacity=0.9
 cursor-style-blink=false
-theme=GruvboxDarkHard # also like Monokai Remastered
+theme=GruvboxDarkHard
 
 # window settings
 window-decoration=false
