@@ -9,23 +9,10 @@ set -q XDG_DATA_HOME; or set -Ux XDG_DATA_HOME $HOME/.local/share
 set -q XDG_STATE_HOME; or set -Ux XDG_STATE_HOME $HOME/.local/state
 set -q XDG_CACHE_HOME; or set -Ux XDG_CACHE_HOME $HOME/.cache
 
+# Ensure they exist
 for xdgdir in (path filter -vd $XDG_CONFIG_HOME $XDG_DATA_HOME $XDG_STATE_HOME $XDG_CACHE_HOME)
     mkdir -p $xdgdir
 end
-
-# Set some special global environment variables
-set -q GPG_TTY || set -gx GPG_TTY (tty)
-set -q BROWSER || set -gx BROWSER "/Applications/Firefox.app"
-
-# Directory shortcuts
-set -q SITES || set -gx SITES "$HOME/Herd"
-set -q DOTFILES || set -gx DOTFILES "$HOME/Code/rginnow/dotfiles"
-set -q PROJECT_DIR || set -gx PROJECT_DIR "$HOME/Code"
-
-# Tool configs
-set -q BUN_INSTALL || set -gx BUN_INSTALL "$HOME/.bun"
-set -q TLRC_CONFIG || set -gx TLRC_CONFIG "$HOME/.config/tldr/config.toml"
-set -q EZA_CONFIG_DIR || set -gx EZA_CONFIG_DIR "$HOME/.config/eza/"
 
 # Ensure manpath is set to something so we can add to it.
 set -q MANPATH || set -gx MANPATH ''
@@ -39,7 +26,7 @@ end
 set fish_function_path (path resolve $__fish_config_dir/functions/*/) $fish_function_path
 set fish_complete_path (path resolve $__fish_config_dir/completions/*/) $fish_complete_path
 
-# Setup caching.
+# Setup fish config caching.
 if not set -q __fish_cache_dir
     if set -q XDG_CACHE_HOME
         set -U __fish_cache_dir $XDG_CACHE_HOME/fish
@@ -67,5 +54,5 @@ init_fisher
 
 # Add bin directories to path.
 fish_add_path --prepend (
-    path filter $HOME/Library/Application\ Support/Herd/bin $HOME/.local/bin/local $HOME/.local/bin $HOME/.composer/vendor/bin $HOME/.bun/bin /Users/Shared/Herd/services/postgresql/17/bin /opt/homebrew/bin /usr/local/bin
+    path filter "$HOME/Library/Application Support/Herd/bin" $HOME/.local/bin/local $HOME/.local/bin $HOME/.composer/vendor/bin $HOME/.bun/bin /Users/Shared/Herd/services/postgresql/17/bin /opt/homebrew/bin /usr/local/bin
 )
