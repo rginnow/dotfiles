@@ -11,7 +11,7 @@ abbr -a -- reload "source ~/.config/fish/config.fish"
 
 abbr -a -- cfc "rm -rf $__fish_cache_dir && exit"
 
-abbr -a --position anywhere -- -h "-h | 2&1 | bat --language=help --style=plain"
+abbr -a --position anywhere -- -h "-h 2>&1 | bat --language=help --style=plain"
 abbr -a --position anywhere -- --help "--help 2>&1 | bat --language=help --style=plain"
 
 # reset project
