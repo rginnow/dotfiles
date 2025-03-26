@@ -1,3 +1,3 @@
-function cp --wraps='/bin/cp -i' --description 'alias cp=/bin/cp -i'
+function cp --wraps='/bin/cp -i' --description 'copy interactively'
   /bin/cp -i $argv
 end
