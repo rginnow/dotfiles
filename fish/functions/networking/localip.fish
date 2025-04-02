@@ -1,3 +1,3 @@
-function localip --wraps 'ipconfig' --description 'Get this device\'s local IP address'
-    command ipconfig getifaddr en0 $argv
+function localip -w 'ipconfig' -d 'alias -> ipconfig getifaddr en0 :: Get this device\'s local IP address'
+    ipconfig getifaddr en0 $argv
 end

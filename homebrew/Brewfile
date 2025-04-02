@@ -14,6 +14,7 @@ brew 'direnv'   # Environment switcher for the shell
 brew 'duf'      # Disk Usage/Free Utility
 brew 'eza'      # Easy Zoxide Alias
 brew 'fastfetch'# Fast system info script
+brew 'fd'       # Fast, user-friendly alternative to `find`
 brew 'fzf'      # Fuzzy finder for your shell
 brew 'gh'       # GitHub CLI
 brew 'git-delta'# Syntax highlighting pager for git and diff output

@@ -1,7 +1,11 @@
 function fish_prompt
+    # fish_prompt can be overridden by
+    # prompt plugins like Starship
+
     if not set -q VIRTUAL_ENV_DISABLE_PROMPT
-            set -g VIRTUAL_ENV_DISABLE_PROMPT true
+        set -g VIRTUAL_ENV_DISABLE_PROMPT true
     end
+
     set_color yellow
     printf '%s' $USER
     set_color normal
@@ -19,7 +23,7 @@ function fish_prompt
     # Line 2
     echo
     if test -n "$VIRTUAL_ENV"
-            printf "(%s) " (set_color blue)(path basename $VIRTUAL_ENV)(set_color normal)
+        printf "(%s) " (set_color blue)(path basename $VIRTUAL_ENV)(set_color normal)
     end
     printf '↪ '
     set_color normal

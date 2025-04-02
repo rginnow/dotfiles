@@ -1,13 +1,9 @@
-#
-# abbrs
-#
-
 set -q MY_ABBRS_INITIALIZED; and return
 
 # generic aliases
 abbr -a -- zz exit
 abbr -a -- vim nvim
-abbr -a -- reload "source ~/.config/fish/config.fish"
+abbr -a -- reload source $__fish_config_dir/config.fish
 
 abbr -a -- cfc "rm -rf $__fish_cache_dir && exit"
 
@@ -28,6 +24,9 @@ abbr -a -- library "cd $HOME/Library"
 
 abbr -a -- proj "cd $HOME/Code"
 abbr -a -- projects "cd $HOME/Code"
+
+abbr -a -- site "cd $HOME/Code"
+abbr -a -- sites "cd $HOME/Herd"
 
 abbr -a -- dot "cd $DOTFILES"
 abbr -a -- dotf "cd $DOTFILES"

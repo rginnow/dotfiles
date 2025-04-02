@@ -1,3 +1,3 @@
-function mv --wraps='/bin/mv -iv' --description 'Move interactively (and verbose)'
+function mv -w /bin/mv -d 'alias -> /bin/mv -iv'
   /bin/mv -iv $argv
 end

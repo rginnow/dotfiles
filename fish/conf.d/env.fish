@@ -12,6 +12,7 @@ set -q PROJECT_DIR || set -Ux PROJECT_DIR "$HOME/Code"
 set -q BUN_INSTALL || set -Ux BUN_INSTALL "$HOME/.bun"
 set -q TLRC_CONFIG || set -Ux TLRC_CONFIG "$HOME/.config/tldr/config.toml"
 set -q EZA_CONFIG_DIR || set -Ux EZA_CONFIG_DIR "$HOME/.config/eza/"
+set -q FZF_DEFAULT_OPTS_FILE || set -Ux FZF_DEFAULT_OPTS_FILE "$HOME/.config/fzf/config"
 
 # Set editor variables.
 if test -n "$SSH_CONNECTION"

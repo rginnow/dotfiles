@@ -1,4 +1,4 @@
-function del --description "safe rm"
+function del -d "safe rm"
     if functions -q trash
         argparse --name=del r f i -- $argv; or return 1
         trash $argv

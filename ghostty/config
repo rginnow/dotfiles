@@ -11,12 +11,8 @@ clipboard-trim-trailing-spaces=true
 copy-on-select=true
 scrollback-limit=10_000
 
-# cell adjustments
-adjust-cell-height=10%
-
 # font settings
-font-family=RobotoMono Nerd Font
-font-size=18
+font-size=20
 
 # macos-specific settings
 macos-icon=chalkboard

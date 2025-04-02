@@ -1,3 +1,3 @@
-function cpr --wraps='cp -R' --description 'copy recursively'
-  cp -R $argv
+function cpr -w /bin/cp -d 'alias -> cp -R'
+  /bin/cp -R $argv
 end

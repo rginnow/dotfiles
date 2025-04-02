@@ -1,3 +1,14 @@
+# Setup homebrew.
+if not test -s $__fish_cache_dir/brew_init.fish
+    if test -e /opt/homebrew/bin/brew
+        /opt/homebrew/bin/brew shellenv >$__fish_cache_dir/brew_init.fish
+    else if test -e /usr/local/bin/brew
+        /usr/local/bin/brew shellenv >$__fish_cache_dir/brew_init.fish
+    end
+    source $__fish_cache_dir/brew_init.fish
+end
+
+# Brew shell env vars
 if not set -q HOMEBREW_PREFIX
     if test -e /opt/homebrew/bin/brew
         /opt/homebrew/bin/brew shellenv | source

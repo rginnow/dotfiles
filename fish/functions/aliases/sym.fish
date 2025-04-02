@@ -1,3 +1,3 @@
-function sym --wraps='ln -sf -i' --description 'Interactive symlink'
-  ln -sf -i $argv
+function sym -w ln -d 'alias -> ln -sfi'
+  ln -sfi $argv
 end

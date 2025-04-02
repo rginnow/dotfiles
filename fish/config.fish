@@ -33,6 +33,14 @@ if type -q zoxide
     source $__fish_cache_dir/zoxide_init.fish
 end
 
+# Initialize laravel helper function
+if type -q laravel
+    if not test -r $__fish_cache_dir/laravel_init.fish
+        laravel completion >$__fish_cache_dir/laravel_init.fish
+    end
+    source $__fish_cache_dir/laravel_init.fish
+end
+
 # Initialize project jumping with prj
 # if type -q prj
 #     prj --init fish | source
@@ -51,7 +59,7 @@ set -g fish_prompt_pwd_full_dirs 100
 
 # Initialize starship prompt.
 if type -q starship
-    set -gx STARSHIP_CONFIG $__fish_config_dir/themes/starship.toml
+    set -gx STARSHIP_CONFIG $XDG_CONFIG_HOME/starship/starship.toml
     if not test -r $__fish_cache_dir/starship_init.fish
         starship init fish --print-full-init >$__fish_cache_dir/starship_init.fish
     end

@@ -34,7 +34,9 @@
     # \uF306 = Linux: debian
     # \uEF01 = FA: had_wizard
     # \uE5FB = Custom: folder_git
+    # \uF45B = OCT: horizontal_rule
 
+    # \U000F031F = MD: language_php
     # \U000F08ED = MD: linux_mint
     # \U000F0BD9 = MD: triforce
 
@@ -47,9 +49,8 @@
 add_newline = true                                    # adds a blank line between shell prompts
 continuation_prompt = "[\u25B8\u25B9 ](dimmed white)" # only works in zsh, bash, and powershell
 scan_timeout = 30                                     # timeout for Starship to scan files (milliseconds)
-command_timeout = 500                                 # timeout for commands executed by Starship (milliseconds)
+command_timeout = 2000                                # timeout for commands executed by Starship (milliseconds)
 follow_symlinks = true                                # Follow symlinks to check if they're directories (used in modules like git)
-
 
 # palette name based on palettes at the end of this config
 palette = 'gruvbox_dark_h'
@@ -59,25 +60,22 @@ palette = 'gruvbox_dark_h'
 
 # format left prompt
 format = """
-[\uE0B6](gruv_bg0)\
-[$os $username $sudo](bg:prev_bg)\
-[\uE0B0](fg:prev_bg bg:gruv_bg1)\
-[( ${custom.folder_icon}${custom.home_icon}${custom.code_icon} )$directory ](bg:prev_bg)\
+[\uE0C2 ](gruv_bg1)\
+[$os $username](bg:prev_bg)\
 [\uE0B0](fg:prev_bg bg:gruv_bg2)\
-[( $git_branch$git_state )](bg:prev_bg)\
+[( ${custom.folder_icon}${custom.home_icon}${custom.code_icon} )$directory ](bg:prev_bg)\
 [\uE0B0](fg:prev_bg bg:gruv_bg3)\
-$php$nodejs$bun\
+[( $git_branch$git_state )](bg:prev_bg)\
 [\uE0B0](fg:prev_bg bg:gruv_bg4)\
-$docker_context\
+$nodejs$bun\
 [\uE0B0](fg:prev_bg) \
-$git_status$git_metrics\
-$fill\
-$cmd_duration$battery $hostname \
-[\uE0B2](fg:gruv_bg0)\
+${custom.laravel}${custom.vue}${custom.react}\
+$git_status$git_metrics $fill$hostname ${custom.php}${custom.tailscale}${custom.vpn}$cmd_duration\
+[\uE0B2](fg:gruv_bg1)\
 $time\
-[\uE0B4](fg:gruv_bg0)
+[\uE0B4](fg:prev_bg)
 ${custom.git_config_email}\
-$localip $character"""
+$localip$sudo $character"""
 
 # format right prompt
 # right_format = ""
@@ -104,15 +102,15 @@ $localip $character"""
 
 [username] # logged in user
     show_always = true
-    format      = '[$user]($style)'
+    format      = '[$user ]($style)'
     style_user  = "fg:gruv_orange bg:prev_bg"
     style_root  = "fg:gruv_orange bg:prev_bg"
 
 [hostname]
     disabled = false
     ssh_only = false
-    style    = "fg:gruv_bg2 bg:prev_bg"
-    format   = '[$hostname]($style)'
+    style    = "dimmed fg:gruv_bg2"
+    format   = '[ $hostname]($style)'
     trim_at  = ""
     detect_env_vars = [ '!TMUX' ]
 
@@ -140,36 +138,41 @@ $localip $character"""
 
 [git_metrics]
     disabled      = false
-    added_style   = "green"
-    deleted_style = "red"
+    format        = '[+$added]($added_style)[|](gruv_gray)[-$deleted]($deleted_style)'
+    added_style   = "gruv_green"
+    deleted_style = "gruv_red"
 
 [git_status]
     disabled = false
-    format   = '([\[$all_status$ahead_behind\]](bold cyan) )'
+    format   = '([[\[$all_status\]](gruv_aqua) [$ahead_behind](gruv_blue)](bold) )'
     ahead    = ' ⇡${count}'
     behind   = ' ⇣${count}'
-    diverged = '⇕⇡${ahead_count}⇣${behind_count}'
-    staged   = '[++\($count\)](green)'
+    diverged = "\U000F00FB ⇡${ahead_count}⇣${behind_count}"
+    staged   = '[++\($count\)](gruv_green)'
 
 [php]
-    disabled       = false
-    symbol         = "\U000f031f "
-    style          = "fg:bright-purple bg:prev_bg"
-    format         = '[ $symbol($version) ]($style)'
+    disabled       = true
+    symbol         = "\U000F031F "
+    style          = "bold fg:gruv_purple bg:prev_bg"
+    format         = '[$symbol$version ]($style)'
     version_format = "v${major}.${minor}"
 
 [nodejs]
-    disabled       = false
-    symbol         = "\U000F0399 "
-    style          = "fg:gruv_green bg:prev_bg"
-    format         = '[$symbol($version) ]($style)'
-    version_format = "v${raw}"
+    disabled          = false
+    symbol            = "\U000F0399 "
+    version_format    = "v${raw}"
+    style             = "bold fg:gruv_green bg:prev_bg"
+    format            = '[ $symbol$version ]($style)'
+    not_capable_style = "bold gruv_red"
+    detect_extensions = [ "js", "mjs", "cjs", "ts", "mts", "cts" ]
+    detect_files      = [ "package.json", ".node-version", ".nvmrc", "!bun.lock" ]
+    detect_folders    = [ "node_modules" ]
 
 [bun]
     disabled = false
-    format   = "[$symbol($version )]($style)"
+    format   = "[ $symbol$version ]($style)"
     symbol   = "\uE76F "
-    style    = "fg:green bg:prev_bg"
+    style    = "fg:gruv_green bg:prev_bg"
 
 [docker_context]
     symbol = "\uE7B0 "
@@ -179,10 +182,10 @@ $localip $character"""
 [localip]
     disabled = false
     ssh_only = true
-    format   = " [$localipv4](bold fg:green)"
+    format   = " [ $localipv4](bold fg:green)"
 
 [battery]
-    disabled           = false
+    disabled           = true
     format             = "[ $percentage $symbol]($style)"
     charging_symbol    = "[↑](fg:green)"
     discharging_symbol = "↓"
@@ -202,12 +205,12 @@ $localip $character"""
 [time]
     disabled    = false
     time_format = "%R"
-    style       = "bg:gruv_bg0"
-    format      = "[[ \uF017 $time ](fg:gruv_fg bg:gruv_bg0)]($style)"
+    style       = "fg:gruv_fg"
+    format      = "[[ \uF017 $time](bg:gruv_bg1)]($style)"
 
 [cmd_duration]
     disabled = false
-    format = "[\U000F199F](dimmed fg:gruv_yellow) [$duration]($style)"
+    format = "[\U000F199F](dimmed fg:gruv_yellow) [$duration]($style) "
     style = "gruv_yellow bold"
     min_time = 1000
 
@@ -216,8 +219,8 @@ $localip $character"""
 
 [character]
     disabled = false
-    success_symbol            = "[\uF120 ](gruv_green)"
-    error_symbol              = "[\uEA87](gruv_red)"
+    success_symbol            = "[[\uf054](bright-red)[\uf054](bright-yellow)[\uf054](bright-green)](bold)"
+    error_symbol              = "[\uEA87 \uf054](gruv_red)"
     vimcmd_symbol             = "[\U000F0DBA ](bold gruv_green)"
     vimcmd_replace_one_symbol = "[\U000F0DBA ](bold gruv_purple)"
     vimcmd_replace_symbol     = "[\U000F0DBA ](bold gruv_purple)"
@@ -225,9 +228,11 @@ $localip $character"""
 
 [fill]
     disabled = false
-    symbol = " "
+    symbol = "\uF45B"
+    style = "dimmed fg:gruv_bg2"
 
 [custom.git_config_email]
+    disabled    = true
     description = "Output the current git user's configured email address."
     command     = "git config user.email"
     when        = "git rev-parse --is-inside-work-tree >/dev/null 2>&1"
@@ -263,6 +268,69 @@ $localip $character"""
     format      = "[ $symbol]($style)"
     symbol      = "\U0000F1C9"
     style       = 'fg:gruv_yellow bg:prev_bg'
+
+[custom.sites_icon]
+    description = "Custom icon when at the $SITES directory"
+    when        = "$PWD = $SITES"
+    format      = "[ $symbol]($style)"
+    symbol      = "\U0000F1C9"
+    style       = 'fg:gruv_yellow bg:prev_bg'
+
+[custom.composer]
+    description = "Custom display of composer version when installed"
+    command     = "sh $DOTFILES/fish/themes/commands/composer_version.sh"
+    when        = true
+    format      = "[$symbol($output )]($style)"
+    symbol      = "\uE783 "
+    style       = "bold fg:gruv_yellow bg:prev_bg"
+
+[custom.php]
+    description = "Custom display of the current PHP CLI version"
+    command     = "sh $DOTFILES/fish/themes/commands/php_version.sh"
+    when        = true
+    format      = "[$symbol($output )]($style)"
+    symbol      = "\U000F031F "
+    style       = 'bold fg:gruv_purple bg:prev_bg'
+
+[custom.laravel]
+    description = "The version of Laravel used by the current project"
+    command     = "sh $DOTFILES/fish/themes/commands/laravel_version.sh"
+    when        = "sh $DOTFILES/fish/themes/commands/is_laravel.sh"
+    symbol      = "\uE73F "
+    style       = "fg:#f53003 bg:prev_bg"
+    format      = "[$symbol$output ]($style)"
+
+[custom.vue]
+    description    = "Vue icon and version wused by the current project"
+    command        = "sh $DOTFILES/fish/themes/commands/vue_version.sh"
+    when           = "sh $DOTFILES/fish/themes/commands/is_vue.sh"
+    symbol         = "\uE6A0 "
+    style          = "fg:gruv_green bg:prev_bg"
+    format         = "[$symbol$output ]($style)"
+    ignore_timeout = true
+
+[custom.react]
+    description    = "React icon and version wused by the current project"
+    command        = "sh $DOTFILES/fish/themes/commands/react_version.sh"
+    when           = "sh $DOTFILES/fish/themes/commands/is_react.sh"
+    symbol         = "\uE7BA"
+    style          = "fg:gruv_blue bg:prev_bg"
+    format         = "[$symbol$output ]($style)"
+    ignore_timeout = true
+
+[custom.tailscale]
+    description    = "Tailscale icon that shows when connected"
+    when           = 'scutil --nc list | rg "Connected" | rg -q "tailscale"'
+    symbol         = "\U000F15FC"
+    style          = "fg:gruv_blue bg:prev_bg"
+    format         = "[$symbol$output ]($style)"
+
+[custom.vpn]
+    description    = "Tailscale icon that shows when connected"
+    when           = 'scutil --nc list | rg "Connected" | rg -q "proton"'
+    symbol         = "\U000F0BC4"
+    style          = "fg:gruv_blue bg:prev_bg"
+    format         = "[$symbol$output ]($style)"
 
 
 # PALETTES                                 2025-03-19

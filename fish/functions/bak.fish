@@ -1,4 +1,4 @@
-function bak --description 'backup a file'
+function bak -d 'alis -> cp -R "$f" "$f".date :: backup a file'
     set --local now (date +"%Y%m%d-%H%M%S")
     for f in $argv
         if not test -e "$f"
