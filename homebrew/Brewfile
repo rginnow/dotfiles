@@ -1,68 +1,136 @@
 # Taps
-tap 'homebrew/bundle'
+tap 'buo/cask-upgrade'
 tap 'oven-sh/bun'
 
-# Binaries
-brew 'ansible'  # Hardware configuration automation
-brew 'bat'      # A cat(1) clone with wings.
-brew 'boxes'    # Draw boxes around text
-brew 'bun'      # Superfast javascript runtime/bundler/pm
-brew 'ca-certificates'
-brew 'cowsay'   # The configurable talking cow
-brew 'curl'     # get a file from a server (latest release version)
-brew 'direnv'   # Environment switcher for the shell
-brew 'duf'      # Disk Usage/Free Utility
-brew 'eza'      # Easy Zoxide Alias
-brew 'fastfetch'# Fast system info script
-brew 'fd'       # Fast, user-friendly alternative to `find`
-brew 'fzf'      # Fuzzy finder for your shell
-brew 'gh'       # GitHub CLI
-brew 'git-delta'# Syntax highlighting pager for git and diff output
-brew 'gnupg'    # GNU Pretty Good Privacy (PGP)
-brew 'lolcat'   # Rainbows and unicorns!
-brew 'mackup'   # Mac settings backup
-brew 'neovim'   # Extensible and agile vim fork
-brew 'ripgrep'  # Better grep
-brew 'sqlite'   # CLI for sqlite
-brew 'starship' # Cross-shell customizable terminal prompt
-brew 'tlrc'     # TLDR.sh Rust Client
-brew 'tmux'     # Terminal multiplexer
-brew 'xh'       # Fast & friendly HTTP client
-brew 'zoxide'   # A faster way to navigate your filesystem
+################
+# Command Line #
+################
 
-# Applications
-# cask '1password'
-# cask 'brave-browser'
-# cask 'cursor'
-cask 'discord'
-# cask 'figma'
-cask 'firefox'
-cask 'ghostty'
-# cask 'helo'
-cask 'herd'
-# cask 'insomnia'
-# cask 'kitty'
-cask 'linear-linear'
-cask 'logi-options+'
-cask 'logitech-g-hub'
-#cask 'microsoft-teams'
-#cask 'microsoft-outlook'
-cask 'notion'
-cask 'obs'
-cask 'obsidian'
-cask 'protonvpn'
-cask 'proton-pass'
-cask 'proton-mail'
-cask 'proton-drive'
-cask 'raycast'
-cask 'signal'
-cask 'slack'
-cask 'spotify'
-cask 'tableplus'
-cask 'tailscale'
-cask 'tinkerwell'
-cask 'visual-studio-code'
-cask 'zoom'
+# CLI Essentials
+brew 'git'      # Version control (latest release version)
+brew 'neovim'   # Extensible and agile fork of the vim text editor
+brew 'tmux'     # Terminal multiplexer
+
+# CLI Basics
+brew 'bat'      # A 'cat' clone with wings.
+brew 'curl'     # Get a file from a server (latest release version)
+brew 'duf'      # Disk Usage/Free Utility (better df)
+brew 'eza'      # Replacement for 'exa' (better 'ls')
+brew 'fd'       # Fast, user-friendly alternative to `find`
+brew 'fzf'      # Fuzzy finder
+brew 'jq'       # Json parser, output and query files
+brew 'ripgrep'  # Better grep
+brew 'zoxide'   # Auto-learning navigation tool (better cd)
+
+# CLI Tooling
+brew 'rclone'   # Manage and sync cloud storage
+brew 'xh'       # Fast & friendly HTTP client
+
+# CLI Utilities
+brew 'direnv'   # Environment switcher for the shell
+brew 'fish'     # Friendly interactive shell
+brew 'git-delta'# Syntax highlighting pager for git and diff output
+brew 'mackup'   # Mac settings backup
+brew 'mas'      # Mac App Store command line interface
+brew 'starship' # Cross-shell customizable terminal prompt
+
+# CLI External Services
+brew 'tlrc'     # Community docs (better man, TLDR.sh Rust Client)
+
+# CLI Fun
+brew 'fastfetch'# Fast version of neofetch - show system data and info
+brew 'boxes'    # Draw boxes around text
+brew 'cowsay'   # The configurable talking cow
+brew 'lolcat'   # Rainbows and unicorns!
+
+########################
+# Desktop Applications #
+########################
+
+# Browsers
+cask 'brave-browser'    # Privacy-focused Chromium-based browser
+cask 'firefox'          # Open-source web browser
+
+# Creativity
+cask 'obs'              # Screencasting / Recording
+cask 'figma'            # Design tool
+
+# Communications
+cask 'discord'          # Gaming communication
+cask 'microsoft-teams'  # Group/Team communication
+cask 'signal'           # Encrypted messaging
+cask 'slack'            # Group/Team communication
+cask 'zoom'             # Video conferencing
+
+# Media
+cask 'logitech-g-hub'   # Logitech gaming software
+cask 'logi-options+'    # Logitech mouse software
+cask 'spotify'          # Propietary music streaming
+
+# Productivity and Organization
+cask 'linear-linear'    # Issue tracking
+cask 'notion'           # Note-taking and organization
+cask 'obsidian'         # Note-taking and organization
+cask 'raycast'          # Better Spotlight
+
+# Personal
+cask 'protonvpn'        # VPN
+cask 'proton-pass'      # Password manager
+cask 'proton-mail'      # Encrypted email
+cask 'proton-drive'     # Encrypted file storage
+
+
+########################
+# Software Development #
+########################
+
+# Development Apps
+cask 'dbngine'          # Local database management (for DB not supported by Herd)
+cask 'helo'             # Mail trap for testing
+cask 'postman'          # HTTP API testing client
+cask 'tableplus'        # Database GUI client
+cask 'tinkerwell'       # PHP REPL (Laravel Tinker)
+
+# Dev languages, compilers, package managers, etc.
+brew 'bun'              # Superfast javascript runtime/bundler/pm
+brew 'go'               # Go programming language
+brew 'lua'              # Powerful, efficient, lightweight scripting language
+brew 'sqlite'           # CLI for sqlite
+
+# DevOps
+cask 'herd'             # Managed PHP Dev Environment
+brew 'ansible'          # Automation
+brew 'docker'           # Containerization
+
+# IDEs & Editors
+cask 'cursor'           # AI code editor
+cask 'visual-studio-code' # Simple & free code editor
+
+# Terminal Emulators
+cask 'ghostty'          # Terminal emulator for macOS
+cask 'kitty'            # Cross-platform, fast, feature-rich, GPU based terminal emulator
+
+# Dev Utilities
+brew 'awscli'           # AWS command line interface
+brew 'awslogs'          # AWS CloudWatch logs command line interface
+brew 'gh'               # GitHub CLI
+cask 'session-manager-plugin' # AWS Session Manager Plugin for the AWS CLI
+
+# Networking
+brew 'dnsmasq'          # Local DNS server
+brew 'nmap'             # Network exploration tool and security/port scanner
+cask 'tailscale'        # Private VPN, encrypted networking
+
+# Security & Encryption
+brew 'bcrypt'           # Encryption utility, using blowfish algorithm
+brew 'gnupg'            # GNU Pretty Good Privacy (PGP)
+brew 'mkcert'           # Make local SSL certificates
+brew 'nss'              # Network Security Services (NSS) libraries
+brew 'openssl'          # Cryptography and SSL/TLS toolkit
+
+#########
+# Other #
+#########
 
 # Fonts
 cask 'font-cascadia-code'
@@ -78,6 +146,7 @@ cask 'font-geist-mono-nerd-font'
 cask 'font-inconsolata'
 cask 'font-inconsolata-nerd-font'
 cask 'font-inter'
+cask 'font-jetbrains-mono-nerd-font'
 cask 'font-lato'
 cask 'font-monaspace'
 cask 'font-monaspace-nerd-font'
@@ -85,3 +154,7 @@ cask 'font-open-sans'
 cask 'font-roboto'
 cask 'font-roboto-mono'
 cask 'font-roboto-mono-nerd-font'
+
+# Mac App Store
+mas 'Xcode', id: 497799835 # https://apps.apple.com/us/app/xcode/id497799835?mt=12
+mas 'Spark Mail - AI Email & Inbox', id: 6445813049 # https://apps.apple.com/us/app/spark-mail-ai-email-inbox/id6445813049?mt=12

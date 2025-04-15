@@ -1,13 +1,78 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 SSH_DIR=~/.ssh/
 
-read -rp "Enter email to use: " email
-read -rp "Enter new key name: " keyname
+####################
+# HELPER FUNCTIONS #
+####################
 
-echo " -- Creating new SSH key $keyname for $email --"
-ssh-keygen -t ed25519 -C "$email" -f "$SSH_DIR$keyname" -P "" -q
+verify_ssh_agent() {
+  if pgrep -u "$USER" ssh-agent > /dev/null; then
+      echo " -- SSH agent is running --"
+  else
+      echo " -- Starting SSH agent... --"
+      eval "$(ssh-agent -s)"
+      if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+          echo "-- FAILED to start SSH agent! No ssh-agent process found --"
+          exit 1
+      fi
+      echo " -- SSH agent started successfully --"
+  fi
+}
+
+
+###############
+# MAIN SCRIPT #
+###############
+
+echo "
+ -- Creating SSH key --
+This script will create a new SSH key and add it
+to the ssh-agent. You can use this key for GitHub,
+GitLab, or any other service that supports SSH keys."
+
+echo "
+ -- Important Notes --
+1) If you choose to use a passphrase, you will be
+   prompeted to enter your new passphrase twice.
+   The first time will be for key creation, and the
+   second to allow it to be added to the ssh-agent.
+2) If you choose a key name that already exists,
+   it will be overwritten.
+"
+
+# Prompt the user for inputs needed
+printf "Enter email to use: " >&2
+read -r email
+if [ -z "$email" ]; then
+    echo " -- No email provided, exiting --"
+    exit 1
+fi
+
+# Prompt for the key name, defaulting to id_ed25519 if it is left out
+printf "Enter new key name (default: id_ed25519): " >&2
+read -r keyname
+if [ -z "$keyname" ]; then
+    keyname="id_ed25519"
+fi
+
+# Prompt for a passphrase, but don't show it
+printf "Enter a passphrase (or leave blank): " >&2
+stty -echo; read -r passphrase; stty echo
+
+# Check if SSH agent is running
+printf "\n\n"
+verify_ssh_agent
+
+echo "
+ -- Creating new SSH key --
+ Key name: $keyname
+ Email: $email
+ --------------------------
+"
+ssh-keygen -t ed25519 -C "$email" -f "$SSH_DIR$keyname" -P "$passphrase" -q
+
 ssh-add "$SSH_DIR$keyname"
 
-echo " -- Public key -- "
+printf "\n -- Public key -- \n"
 cat "$SSH_DIR$keyname.pub"

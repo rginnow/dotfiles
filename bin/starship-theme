@@ -18,7 +18,7 @@ if [ ! "$(ls -A "$THEMES_DIR" 2>/dev/null)" ]; then
 fi
 
 # Use fzf to choose a theme
-SELECTED_THEME=$(find $THEMES_DIR -type f | fzf | sed 's/.*\///')
+SELECTED_THEME=$(find "$THEMES_DIR" -type f | fzf | sed 's/.*\///')
 
 if [ -n "$SELECTED_THEME" ]; then
     # Make sure the starship config directory exists

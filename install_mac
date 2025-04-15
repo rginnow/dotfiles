@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# Install the Artii Ruby Gem for some ASCII art stuff (preferred over figlet)
+if command -v artii >/dev/null 2>&1; then
+    echo "Artii already installed. Continuing..."
+else
+    echo "Artii not found. Installing..."
+    sudo gem install artii
+fi
+
+# Install Homebrew
+if command -v brew >/dev/null 2>&1; then
+    echo "Homebrew is already installed. Continuing..."
+else
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
+    echo "Homebrew installed."
+fi
+
+# Update brew & get bundle support
+brew update
+
+# install all the brews!
+brew bundle --file="$DOTFILES/homebrew/Brewfile"

@@ -1,0 +1,80 @@
+#!/bin/sh
+
+# Intent here is mainly for a first time install on my personal
+# Raspberry Pi setup and Debian servers.
+
+install_bun() {
+    # Check if bun is already installed
+    if command -v bun >/dev/null 2>&1; then
+        echo "Bun is already installed. Continuing..."
+    else
+        # Install bun
+        echo "Installing bun..."
+        curl -fsSL https://bun.sh/install | bash
+        echo "Bun installed."
+    fi
+}
+
+install_eza() {
+    # Check if eza is already installed
+    if command -v eza >/dev/null 2>&1; then
+        echo "Eza is already installed. Continuing..."
+    else
+        echo "Installing eza..."
+
+        # Gotta grab the gpg keys first...
+        sudo mkdir -p /etc/apt/keyrings
+        wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+        echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
+        sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+
+        # Update the package list and install eza
+        sudo apt update
+        sudo apt install -y eza
+
+        echo "Eza installed."
+    fi
+}
+
+install_nvm() {
+    # Check if nvm is already installed
+    if command -v nvm >/dev/null 2>&1; then
+        echo "NVM is already installed. Continuing..."
+    else
+        # Install nvm
+        echo "Installing NVM..."
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+        echo "NVM installed."
+    fi
+    # Loading NVM into the shell should already be in the respective shell config
+}
+
+# Get fresh apt packages
+echo "Running update..."
+sudo apt update && sudo apt -y upgrade
+
+# Set up dependency list
+set -- bat build-essential ca-certificates curl direnv fastfetch fd-find fzf git gpg neovim ripgrep vim wget
+
+echo "Installing dependencies..."
+for package in "$@"; do
+    if ! dpkg -l | grep -q "$package"; then
+        echo "Installing $package..."
+        apt install -y "$package"
+    else
+        echo "$package is already installed. Continuing..."
+    fi
+done
+echo "Dependency install finished."
+
+# Install other items
+install_bun
+install_eza
+install_nvm
+
+
+# Cleanup
+echo "Cleaning up..."
+
+# Symlink to bind fd-find to fd instead
+ln -s "$(which fdfind)" "$HOME/.local/bin/local/fd"
