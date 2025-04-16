@@ -28,7 +28,6 @@ brew 'xh'       # Fast & friendly HTTP client
 
 # CLI Utilities
 brew 'direnv'   # Environment switcher for the shell
-brew 'fish'     # Friendly interactive shell
 brew 'git-delta'# Syntax highlighting pager for git and diff output
 brew 'mackup'   # Mac settings backup
 brew 'mas'      # Mac App Store command line interface
