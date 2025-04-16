@@ -102,6 +102,7 @@ brew 'ansible'          # Automation
 brew 'docker'           # Containerization
 
 # IDEs & Editors
+cask 'jetbrains-toolbox' # JetBrains IDEs
 cask 'cursor'           # AI code editor
 cask 'visual-studio-code' # Simple & free code editor
 
