@@ -70,15 +70,15 @@ alias dfj="duf --json"
 # adds nicer formatting (syntax highlighting and line numbers)
 # can be combined with other tools like less, tail, fzf, etc.
 alias cat="bat --paging=never"
-alias bat="bat --color=always"
+#alias bat="bat --color=always"
 alias batlog="bat --paging=never -l log" # used with tail -f
 # highlighting help messages with bat
 alias -g -- -h='-h 2>&1 | bat --language=help --style=plain'
 alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
 
 # FZF (better find)
-alias fzf='fzf --style minimal --tmux bottom,90%,60%'
-alias fzfp='fzf --style minimal --tmux bottom,90%,60% --preview "fzf-preview.sh {}"'
+#alias fzf='fzf --style minimal --tmux bottom,90%,60%'
+#alias fzfp='fzf --style minimal --tmux bottom,90%,60% --preview "fzf-preview.sh {}"'
 
 # ZOXIDE (better cd)
 # adds a lot of features to cd, like bookmarks, history, and more
@@ -124,3 +124,4 @@ if command -v fzf &> /dev/null
 then
     alias preview="fzf --preview 'bat --color \"always\" {}'"
 fi
+
