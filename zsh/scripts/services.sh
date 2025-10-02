@@ -1,8 +1,10 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Declare array of services and pretty human readable names
 declare -a services=(
     "brave"
+    "Cursor" # com.apple.TextInputUI.xpc.CursorUiViewService
+    "ghostty"
     "kitty"
     "application.ch.protonmail.drive"
     "protonmail.desktop"
@@ -15,6 +17,8 @@ declare -a services=(
 
 declare -a serviceNames=(
     "Brave"
+    "Cursor"
+    "Ghostty"
     "Kitty"
     "Proton-Drive"
     "Proton-Mail"
@@ -27,10 +31,14 @@ declare -a serviceNames=(
 
 declare -a serviceStatus=()
 
+RED="\033[31m"
+GREEN="\033[32m"
+ENDCOLOR="\033[0m"
+
 # Get status of all my services
 for service in "${services[@]}"
 do
-	status=`launchctl list | grep "$service"`
+	status=$(launchctl list | grep "$service")
 	if [[ ! -z $status ]]; then
 		serviceStatus+=("active")
 	else
@@ -38,28 +46,21 @@ do
 	fi
 done
 
-# Maximum column width
-#width=$((49-2))
-width=80
-
-for i in ${!serviceStatus[@]}
+for i in "${!serviceStatus[@]}"
 do
-	# Next line and next line length
-	next="${serviceNames[$i]}: \e[5m${serviceStatus[$i]}"
-
 	# If the current line will exceed the max column with then echo the current line and start a new line
 	if [[ i -eq 0 || $((i%2)) -eq 0 ]]; then
-        printf "$line" | awk '{ printf "  %-22s %-22s %-22s %-22s\n", $1, $2, $3, $4 }'
+        echo -e "$line" | awk '{ printf "  %-22s %-22s %-22s %-22s\n", $1, $2, $3, $4 }'
         line=""
 	fi
 
 	# Color the next line green if it's active, else red
 	if [[ "${serviceStatus[$i]}" == "active" ]]; then
-		line+="\e[32m\e[0m${serviceNames[$i]}: \e[32m${serviceStatus[$i]}\e[0m "
+		line+="${serviceNames[$i]}: ${GREEN}${serviceStatus[$i]}${ENDCOLOR} "
 	else
-		line+="\e[32m\e[0m${serviceNames[$i]}: \e[31m${serviceStatus[$i]}\e[0m "
+		line+="${serviceNames[$i]}: ${RED}${serviceStatus[$i]}${ENDCOLOR} "
 	fi
 done
 
 # echo what is left
-printf "$line" | awk '{ printf "  %-22s %-22s %-22s %-22s\n", $1, $2, $3, $4 }'
+echo -e "$line" | awk '{ printf "  %-22s %-22s %-22s %-22s\n", $1, $2, $3, $4 }'
