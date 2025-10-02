@@ -285,6 +285,7 @@ $localip$sudo $character"""
     style       = "bold fg:gruv_yellow bg:prev_bg"
 
 [custom.php]
+    disabled    = true
     description = "Custom display of the current PHP CLI version"
     command     = "sh $DOTFILES/fish/themes/commands/php_version.sh"
     when        = true
@@ -293,6 +294,7 @@ $localip$sudo $character"""
     style       = 'bold fg:gruv_purple bg:prev_bg'
 
 [custom.laravel]
+    disabled    = true
     description = "The version of Laravel used by the current project"
     command     = "sh $DOTFILES/fish/themes/commands/laravel_version.sh"
     when        = "sh $DOTFILES/fish/themes/commands/is_laravel.sh"
@@ -301,6 +303,7 @@ $localip$sudo $character"""
     format      = "[$symbol$output ]($style)"
 
 [custom.vue]
+    disabled       = true
     description    = "Vue icon and version wused by the current project"
     command        = "sh $DOTFILES/fish/themes/commands/vue_version.sh"
     when           = "sh $DOTFILES/fish/themes/commands/is_vue.sh"
@@ -310,6 +313,7 @@ $localip$sudo $character"""
     ignore_timeout = true
 
 [custom.react]
+    disabled       = true
     description    = "React icon and version wused by the current project"
     command        = "sh $DOTFILES/fish/themes/commands/react_version.sh"
     when           = "sh $DOTFILES/fish/themes/commands/is_react.sh"
@@ -326,8 +330,8 @@ $localip$sudo $character"""
     format         = "[$symbol$output ]($style)"
 
 [custom.vpn]
-    description    = "Tailscale icon that shows when connected"
-    when           = 'scutil --nc list | rg "Connected" | rg -q "proton"'
+    description    = "VPN icon that shows when connected"
+    when           = 'scutil --nc list | rg "Connected" | rg -qi "vpn&&[^:io.tailscale]"'
     symbol         = "\U000F0BC4"
     style          = "fg:gruv_blue bg:prev_bg"
     format         = "[$symbol$output ]($style)"
