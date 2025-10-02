@@ -46,6 +46,10 @@ brew 'lolcat'   # Rainbows and unicorns!
 # Desktop Applications #
 ########################
 
+# NOTE: Casks can be installed into the user's app directory using the HOMEBREW_CASK_OPTS variable
+# e.g. on Mac, ~/Applications instead of /Applications
+# You may need to verify that the cask is able to be installed into other directories first.
+
 # Browsers
 cask 'brave-browser'    # Privacy-focused Chromium-based browser
 cask 'firefox'          # Open-source web browser
@@ -107,7 +111,7 @@ cask 'cursor'           # AI code editor
 cask 'visual-studio-code' # Simple & free code editor
 
 # Terminal Emulators
-cask 'ghostty'          # Terminal emulator for macOS
+cask 'ghostty'          # Terminal emulator
 cask 'kitty'            # Cross-platform, fast, feature-rich, GPU based terminal emulator
 
 # Dev Utilities
