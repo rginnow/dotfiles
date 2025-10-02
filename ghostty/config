@@ -1,40 +1,21 @@
 #################################################################################
 # Ghostty Terminal Settings                                                     #
-# Based on: https://github.com/michaeldyrynda/dotfiles/blob/main/ghostty/config #
 # Ghostty Config Reference: https://ghostty.org/docs/config/reference           #
 #################################################################################
 
-
 # basic settings
-auto-update=check
-clipboard-trim-trailing-spaces=true
-copy-on-select=true
-scrollback-limit=10_000
+auto-update = check
+clipboard-trim-trailing-spaces = true
+copy-on-select = true
+mouse-hide-while-typing = true
+theme = Catppuccin Mocha
+scrollback-limit = 10_000
+shell-integration = zsh
 
 # font settings
-font-size=20
-
-# macos-specific settings
-macos-icon=chalkboard
-macos-option-as-alt=true
-macos-titlebar-proxy-icon=hidden
-macos-titlebar-style=tabs
-
-# shell options
-shell-integration=fish
-shell-integration-features=no-cursor
-
-# themeing and colors
-background-blur-radius=true
-background-opacity=0.9
-cursor-style-blink=false
-theme=GruvboxDarkHard
+font-size = 20
+font-family = JetBrainsMono Nerd Font Propo
 
 # window settings
-window-decoration=false
-window-height=32
-window-padding-balance=true
-window-padding-x=
-window-padding-y=
-window-save-state=always
-window-width=144
+window-padding-balance = true
+window-save-state = always
