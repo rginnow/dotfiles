@@ -84,13 +84,13 @@ alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
 # adds a lot of features to cd, like bookmarks, history, and more
 
 # Listings with Eza (previously exa, replaces ls)
-alias ls="eza --color=always --icons=always --long --git --no-time --no-user --no-permissions --no-filesize"
-alias ll="eza -lghamUF --git --icons=always" # list view: long, group, headers, all, modified, created, file indicators
-alias llt="eza -gTL 2 --git --icons=always"  # tree view: group, tree, 2 levels deep
+alias ls="eza -1 --color=always --icons=always"
+alias ll="eza -lghamUF --git --color=always --icons=always" # list view: long, group, headers, all, modified, created, file indicators
+alias llt="eza -gTL 2 --git --color=always --icons=always"  # tree view: group, tree, 2 levels deep
 
 # Sort listings
-alias llm="eza -lghamUF --git --icons=always --sort=modified"
-alias lld="eza -lghamUF --git --icons=always --group-directories-first"
+alias llm="eza -lghamUF --git --color=always --icons=always --sort=modified"
+alias lld="eza -lghamUF --git --color=always --icons=always --group-directories-first"
 
 # Directory shortcuts
 alias projects="cd $HOME/Code"
@@ -124,4 +124,3 @@ if command -v fzf &> /dev/null
 then
     alias preview="fzf --preview 'bat --color \"always\" {}'"
 fi
-
