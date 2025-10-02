@@ -44,5 +44,5 @@ init_fisher
 
 # Add bin directories to path.
 fish_add_path --prepend (
-    path filter "$HOME/Library/Application Support/Herd/bin" $HOME/.local/bin/local $HOME/.local/bin $HOME/.composer/vendor/bin $HOME/.bun/bin /Users/Shared/Herd/services/postgresql/17/bin /opt/homebrew/bin /usr/local/bin
+    path filter "$HOME/Library/Application Support/Herd/bin" $HOME/.local/bin/local $HOME/.local/bin $HOME/.composer/vendor/bin $HOME/.bun/bin /Users/Shared/Herd/services/postgresql/17/bin /opt/homebrew/bin /usr/local/bin "$GOPATH/bin" "$GOROOT/bin"
 )

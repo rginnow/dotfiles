@@ -5,14 +5,19 @@ set -q GPG_TTY || set -Ux GPG_TTY (tty)
 
 # Directory shortcuts
 set -q SITES || set -Ux SITES "$HOME/Herd"
-set -q DOTFILES || set -Ux DOTFILES "$HOME/Code/rginnow/dotfiles"
+set -q DOTFILES || set -Ux DOTFILES "$HOME/Code/github/rginnow/dotfiles"
 set -q PROJECT_DIR || set -Ux PROJECT_DIR "$HOME/Code"
 
 # Tool configs
+set -q GOPATH || set -Ux GOPATH "$HOME/.go"
+set -q GOROOT || set -Ux GOROOT "/opt/homebrew/opt/golang/libexec"
 set -q BUN_INSTALL || set -Ux BUN_INSTALL "$HOME/.bun"
 set -q TLRC_CONFIG || set -Ux TLRC_CONFIG "$HOME/.config/tldr/config.toml"
 set -q EZA_CONFIG_DIR || set -Ux EZA_CONFIG_DIR "$HOME/.config/eza/"
 set -q FZF_DEFAULT_OPTS_FILE || set -Ux FZF_DEFAULT_OPTS_FILE "$HOME/.config/fzf/config"
+
+test -d "$GOPATH" || mkdir "$GOPATH"
+test -d "$GOPATH/src/github.com" || mkdir -p "$GOPATH/src/github.com"
 
 # Set editor variables.
 if test -n "$SSH_CONNECTION"
