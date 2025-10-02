@@ -1,5 +1,6 @@
 {
   "files.associations": {
-    "*.theme": "fish"
+    "*.theme": "fish",
+    "*.conf": "shellscript"
   }
 }
