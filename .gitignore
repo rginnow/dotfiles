@@ -11,3 +11,8 @@ git/config_local
 fisher/
 fish_variables
 fishprof*.txt
+
+# zsh
+zsh/.zcompdump
+zsh/.zhistory
+zsh/.zsh_history

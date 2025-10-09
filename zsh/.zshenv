@@ -20,6 +20,7 @@ export BUN_INSTALL="$HOME/.bun"
 export TLRC_CONFIG="$XDG_CONFIG_HOME/tldr/config.toml"
 export BAT_CONFIG_DIR="$XDG_CONFIG_HOME/bat"
 export BAT_CONFIG_PATH="$XDG_CONFIG_HOME/bat/bat.conf"
+export NVM_LAZY_LOAD=true
 
 # Set the GPG_TTY to be the same as the TTY
 # either via the env var or via the tty command.
@@ -29,19 +30,36 @@ else
   export GPG_TTY="$TTY"
 fi
 
-# Homebrew environment
-if [[ -f "/opt/homebrew/bin/brew" ]] then
-  HOMEBREW_CASK_OPTS="appdir='$HOME/Applications'"
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-fi
-
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-  export GIT_EDITOR="vim"
+    export EDITOR='vim'
+    export GIT_EDITOR="vim"
 else
-  export EDITOR='nvim'
-  export GIT_EDITOR="nvim"
+    export EDITOR='nvim'
+    export GIT_EDITOR="nvim"
+fi
+
+# Homebrew environment
+if [[ -f "/opt/homebrew/bin/brew" ]] then
+    HOMEBREW_CASK_OPTS="appdir='$HOME/Applications'"
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+# Check for Laravel Herd
+if [[ -d "/Applications/Herd.app" ]]; then
+    # Laravel Herd Environment Variables
+    export HERD_PHP_83_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/83/"
+    export HERD_PHP_84_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/84/"
+    export HERD_PHP_85_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/85/"
+
+    # Set NVM Directory
+    export NVM_DIR="$HOME/Library/Application Support/Herd/config/nvm"
+fi
+
+# Set NVM from Homebrew, if not already set by Herd
+if [[ -z $NVM_DIR ]] && [[ -d "$(brew --prefix nvm)" ]]; then
+    # The will set appropriate exports, directories, and symlinks needed
+    [ -s "$(brew --prefix nvm)/nvm.sh" ] && \. "$(brew --prefix nvm)/nvm.sh"
 fi
 
 # FZF Color Theme

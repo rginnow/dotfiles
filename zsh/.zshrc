@@ -31,6 +31,11 @@ zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 
+# Load nvm plugin if we don't have Herd
+if [[ ! -d "/Applications/Herd.app" ]]; then
+    zinit light lukechilds/zsh-nvm
+fi
+
 # Add in snippets
 zinit snippet OMZP::git
 
@@ -62,8 +67,20 @@ setopt hist_find_no_dups
 # Completions
 source $DOTFILES/zsh/zshrc.d/completions.zsh
 
-# Aliases
-source $DOTFILES/zsh/zshrc.d/aliases.zsh
+# init NVM from wherever it is
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# init Herd cli
+[[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
+
+# load nvm completions
+if [[ -d "$(brew --prefix nvm)" ]] && [[ $NVM_DIR != "$HOME/Library/Application Support/Herd/config/nvm" ]]; then
+    # nvm from homebrew
+    \. "$NVM_DIR/etc/bash_completion.d/nvm"
+else
+    # nvm from Herd
+    \. "$NVM_DIR/bash_completion"
+fi
 
 # init fzf & completions
 if type fzf > /dev/null; then
@@ -80,6 +97,22 @@ if type zoxide > /dev/null; then
     fi
     source "$XDG_CACHE_HOME/zsh/zoxide_init.zsh"
 fi
+
+# Docker Completions
+if type docker > /dev/null; then
+    if [[ ! -f "$XDG_CACHE_HOME/zsh/docker_init.zsh" ]]; then
+        docker completion zsh > "$XDG_CACHE_HOME/zsh/docker_init.zsh"
+    fi
+    source "$XDG_CACHE_HOME/zsh/docker_init.zsh"
+fi
+
+# Orbstack command-line tools and integration
+if [[ -d ~/.orbstack ]]; then
+    source ~/.orbstack/shell/init.zsh 2>/dev/null || :
+fi
+
+# Load aliases
+source $DOTFILES/zsh/zshrc.d/aliases.zsh
 
 # p10k prompt
 [[ ! -f "$XDG_CONFIG_HOME/zsh/.p10k.zsh" ]] || source "$XDG_CONFIG_HOME/zsh/.p10k.zsh"
