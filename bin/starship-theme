@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 
+XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+
 # Directory containing your theme files
 THEMES_DIR="$XDG_CONFIG_HOME/starship/themes"
 
