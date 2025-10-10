@@ -35,3 +35,4 @@ end
 
 # Other homebrew vars.
 set -q HOMEBREW_NO_ANALYTICS || set -gx HOMEBREW_NO_ANALYTICS 1
+set -q HOMEBREW_CASK_OPTS || set -gx HOMEBREW_CASK_OPTS "--appdir=~/Applications"

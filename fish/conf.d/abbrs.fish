@@ -25,8 +25,8 @@ abbr -a -- library "cd $HOME/Library"
 abbr -a -- proj "cd $HOME/Code"
 abbr -a -- projects "cd $HOME/Code"
 
-abbr -a -- site "cd $HOME/Code"
-abbr -a -- sites "cd $HOME/Herd"
+#abbr -a -- site "cd $HOME/Code"
+#abbr -a -- sites "cd $HOME/Herd"
 
 abbr -a -- dot "cd $DOTFILES"
 abbr -a -- dotf "cd $DOTFILES"

@@ -44,10 +44,18 @@ set -q SQLITE_HISTORY; or set -Ux SQLITE_HISTORY $XDG_DATA_HOME/sqlite_history
 #set -q WORKON_HOME; or set -Ux WORKON_HOME $XDG_DATA_HOME/venvs
 #set -q PYLINTHOME; or set -Ux PYLINTHOME $XDG_CACHE_HOME/pylint
 
+# NVM
+if test -e /opt/homebrew/opt/nvm
+    set -q NVM_DIR; or set -Ux NVM_DIR "/opt/homebrew/opt/nvm"
+else if test -e "$HOME/Library/Application Support/Herd/config/nvm"
+    set -q NVM_DIR; or set -Ux NVM_DIR "$HOME/Library/Application Support/Herd/config/nvm"
+else
+    set -q NVM_DIR; or set -Ux NVM_DIR "$HOME/.nvm"
+end
+
 # Laravel Herd
-set -Ux NVM_DIR "$HOME/Library/Application Support/Herd/config/nvm"
-set -Ux HERD_PHP_83_INI_SCAN_DIR "$HOME/Library/Application Support/Herd/config/php/83/"
-set -Ux HERD_PHP_84_INI_SCAN_DIR "$HOME/Library/Application Support/Herd/config/php/84/"
+# set -Ux HERD_PHP_83_INI_SCAN_DIR "$HOME/Library/Application Support/Herd/config/php/83/"
+# set -Ux HERD_PHP_84_INI_SCAN_DIR "$HOME/Library/Application Support/Herd/config/php/84/"
 
 # Other vars
 set -q FISH_THEME; or set -U FISH_THEME gruvbox_dark
