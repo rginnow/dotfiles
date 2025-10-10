@@ -76,6 +76,7 @@
 [commit]
     gpgsign = true
 [core]
+    autocrlf = input
     editor = nvim
     excludesfile = ~/.config/git/gitignore
     pager = delta
