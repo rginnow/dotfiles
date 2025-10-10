@@ -1,98 +1,10 @@
-# Generic
-alias vim="nvim"
-alias zshconf="vim ~/.zshrc"
-alias ohmyzsh="vim ~/.oh-my-zsh"
-alias reload="omz reload"
-alias copy="pbcopy < "
-alias please="sudo !!"
-alias dud="du -d 1 -h"
-alias fresh="rm -rf node_modules && rm -rf vendor && npm install && composer install"
-
-# Applications
-alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
-
-# Artisan
-alias a="artisan"
-alias tinker="herd tinker"
-alias horizon="herd horizon"
-alias solo="php artisan solo"
-alias migrate="artisan migrate"
-alias mf="artisan migrate:fresh"
-alias mfs="artian migrate:fresh --seed"
-alias test="artisan test"
-
-# Composer
-alias co="composer dumpautoload -o"
-alias ci="composer install --prefer-dist"
-alias cu="composer update"
-alias cr="composer require"
-alias cgr="composer global require"
-alias cgu="composer global update"
-
-# Git
-alias g="git"
-alias ga="git add"
-alias gb="git checkout -b"
-alias gc="git commit"
-alias gd="git diff"
-alias gl="git log --oneline --decorate --color"
-alias glr="git pull --rebase"
-alias gp="git push"
-alias gpf="git push --force"
-alias grc="git rebase --continue"
-alias gs="git status"
-
-alias amend="git add . && git commit --amend --no-edit"
-alias commit="git add . && git commit -m"
-alias nah="git reset --hard && git clean -df"
-alias pop="git stash pop"
-alias resolve="git add . && git commit --no-edit"
-alias squash="git rebase -i HEAD~"
-alias stash="git stash -u"
-alias switch="git switch"
-alias yoink="git cherry-pick"
-
-# --- Default Command Overrides ---
-# Override default commands with better alternatives
-
-# TLDR (better man)
-# allows for example-based help instead of skimming a literal manual
-alias man="tldr"
-alias how="tldr"
-alias howto="tldr"
-
-# DUF (better df)
-# filesystem disk space usage with a better interface
-alias df="duf"
-alias dfj="duf --json"
-
-# BAT (better cat)
-# adds nicer formatting (syntax highlighting and line numbers)
-# can be combined with other tools like less, tail, fzf, etc.
-alias cat="bat --paging=never"
-#alias bat="bat --color=always"
-alias batlog="bat --paging=never -l log" # used with tail -f
-# highlighting help messages with bat
-alias -g -- -h='-h 2>&1 | bat --language=help --style=plain'
-alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
-
-# FZF (better find)
-#alias fzf='fzf --style minimal --tmux bottom,90%,60%'
-#alias fzfp='fzf --style minimal --tmux bottom,90%,60% --preview "fzf-preview.sh {}"'
-
-# ZOXIDE (better cd)
-# adds a lot of features to cd, like bookmarks, history, and more
-
-# Listings with Eza (previously exa, replaces ls)
-alias ls="eza -1 --color=always --icons=always"
-alias ll="eza -lghamUF --git --color=always --icons=always" # list view: long, group, headers, all, modified, created, file indicators
-alias llt="eza -gTL 2 --git --color=always --icons=always"  # tree view: group, tree, 2 levels deep
-
-# Sort listings
-alias llm="eza -lghamUF --git --color=always --icons=always --sort=modified"
-alias lld="eza -lghamUF --git --color=always --icons=always --group-directories-first"
-
-# Directory shortcuts
+# File Navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias ls="eza -1 --group-directories-first --color=always --icons=always"
+alias ll="eza -lghamUF --group-directories-first --color=always --icons=always --git" # list view: long, group, headers, all, modified, created, file indicators
+alias home='cd $HOME'
 alias projects="cd $HOME/Code"
 alias sites="cd $HOME/Herd"
 alias library="cd $HOME/Library"
@@ -106,21 +18,77 @@ alias cpr="cp -R"
 alias ln="ln -i"
 alias sym="ln -sf -i"
 
-# Environment variables and system info
-alias env="printenv | fzf"
-alias path="echo -e ${PATH//:/\\n} | fzf"
-alias now='date +"%Y-%m-%d %T"'
+# Simple aliases
+alias vim="nvim"
+alias copy="pbcopy < "
+alias please="sudo !!"
 
-# Disk usage by directory
-alias duse="du -sh * 2>/dev/null"
+# Reset project
+alias cleanup="rm -rf node_modules && rm -rf vendor"
+alias refresh="cleanup && npm install && composer install --prefer-dist"
+
+# Applications
+alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+
+# Artisan
+alias tinker="herd tinker"
+alias horizon="herd horizon"
+alias solo="php artisan solo"
+alias migrate="php artisan migrate"
+alias test="php artisan test"
+
+# Composer
+alias dump="composer dumpautoload"
+alias optimize="composer dumpautoload -o"
+alias require="composer require"
+
+# Git
+# see git/config for specific aliases
+alias g="git"
+alias prep="git add ."
+alias commit="git add . && git commit -m"
+alias amend="git add . && git commit --amend --no-edit"
+alias logs="git history"
+alias nah="git reset --hard && git clean -df"
+alias squash="git rebase -i HEAD~"
+alias yoink="git cherry-pick"
+alias wip="git add . && git commit -m 'wip'"
+alias later="git stash -u" # stash all, including untracked files
+
+# TLDR - example based help
+alias howdoi="tldr"
+alias howto="tldr"
+
+# DUF - filesystem disk space usage
+alias df="duf"
+alias dfj="duf --json"
+
+# BAT - improved file viewing (like cat)
+alias cat="bat"
+alias batlog="bat --paging=never -l log" # used with tail -f
+
+# highlighting help messages with bat
+alias -g -- -h='-h 2>&1 | bat --language=help --style=plain'
+alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
 
 # Quick networking checks
 alias ping="ping -c 5"
-alias fastping="ping -c 100 -i 0.2"
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
 
+# Fuzzy finding with FZF
 if command -v fzf &> /dev/null
 then
-    alias preview="fzf --preview 'bat --color \"always\" {}'"
+    alias fzfp="fzf --tmux 80% --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
+    alias preview="fzf --preview 'fzf-preview.sh {}'"
+
+    alias env="printenv | fzf"
+    alias path="echo -e ${PATH//:/\n} | fzf"
+    alias fpath="echo -e ${fpath//:/\n} | fzf"
 fi
+
+# Reload ZSH
+function reload() {
+    exec zsh
+    /usr/bin/clear
+}

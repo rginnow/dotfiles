@@ -4,31 +4,24 @@
     pus = push
 
     ; add
-    aa = add --all
-    ap = add --patch
-    au = add --update
+    add = add --all
+    patch = add --patch
 
     ; branch
-    bd = branch --delete
-    bm = branch --move
-    delbr = branch -
+    del = branch --delete
+    move = branch --move
     current = !git branch | grep"^*" | awk '{ print $2 }'
 
     ; commit
-    ca = commit --amend
-    ci = commit --interactive
-    cm = commit --message
-    cv = commit --verbose
+    commit = commit --message
+    amend = commit --amend --no-edit
 
     ;checkout
-    co = checkout
-    cob = checkout -b
+    check = checkout
+    newbranch = checkout -b
 
     ;diff
-    d = diff
-    dc = diff --cached
-    ds = diff --staged
-    dw = diff --word-diff
+    staged = diff --staged
 
     ;fetch
     update = fetch
@@ -41,13 +34,9 @@
     ffp = flow feature publish
 
     ;log
-    l = log
-    lg = log --graph
-    lk = log --graph --topo-order --abbrev-commit --date=short --decorate --all --boundary --pretty=format:'%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %Cblue[%cn]%Creset'
-    lo = log --oneline
-    lp = log --patch
-    lt = log --topo-order
+    lg = log --graph --topo-order --abbrev-commit --date=short --decorate --all --boundary --pretty=format:'%Cgreen%ad %Cred%h%Creset -%C(yellow)%d%Creset %s %Cblue[%cn]%Creset'
     last = log -1 HEAD --stat
+    history = log --oneline --decorate --color
 
     ;pull
     down = pull
@@ -56,10 +45,11 @@
     up = push
 
     ;status
-    s = status --short --branch
+    stat = status --short --branch
 
     ;stash
     stashes = stash list
+    pop = stash pop
 
     ;branch lists
     branches = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
@@ -69,7 +59,9 @@
 
     ;undo
     unstage = reset HEAD
-    undo-commit = reset HEAD~1 --mixed
+    undo = reset HEAD~1 --mixed
+
+    ;upstream
     set-upstream = !git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`
 [color]
     ui = auto
@@ -126,4 +118,4 @@
 [url "https://gitlab.com/"]
     insteadof = gl:
 [web]
-    browser = firefox
+    browser = brave
