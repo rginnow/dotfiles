@@ -5,114 +5,44 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# -------------------------
-# CONFIGURATION FOR ZSH
-# -------------------------
+# Ensure XDG directories exist
+mkdir -p ~/{.config,.cache,.local/share,.local/state}
 
-# Download Zinit, if it's not there yet
-if [ ! -d "$ZINIT_HOME" ]; then
-   mkdir -p "$(dirname $ZINIT_HOME)"
-   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-fi
+# configure base zsh options (setopt)
+source $DOTFILES/zsh/zshrc.d/options.zsh
 
-# Source/Load zinit
+# Download and initialize Zinit, if it's not there yet
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 source "${ZINIT_HOME}/zinit.zsh"
 
-# Create the zsh cache directory if it doesn't exist
-[[ -d "$XDG_CACHE_HOME/zsh" ]] || mkdir -p "$XDG_CACHE_HOME/zsh"
-
 # Load powerlevel10k theme
-zinit ice depth"1" # git clone depth
+zinit ice depth=1 # git clone depth
 zinit light romkatv/powerlevel10k
 
-# Add plugins
+# Add zsh plugins
 zinit light Aloxaf/fzf-tab
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 
-# Load nvm plugin if we don't have Herd
-if [[ ! -d "/Applications/Herd.app" ]]; then
-    zinit light lukechilds/zsh-nvm
-fi
+# Load an nvm plugin if we don't have Herd
+[[ ! -d "/Applications/Herd.app" ]] && zinit light lukechilds/zsh-nvm
 
 # Add in snippets
 zinit snippet OMZP::git
 
-# Load completions
-autoload -Uz compinit && compinit -d "$XDG_CACHE_HOME/zsh/.zcompdump"
-
-# Replay completion definitions
-zinit cdreplay -q
-
-# Vim keybindings
-bindkey -v
-
-# Set specific highlight rules
-zle_highlight+=(paste:none)
-
-# History Settings
-HISTFILE="$XDG_CACHE_HOME/zsh/.zsh_history"
-HISTSIZE=999999
-SAVEHIST=$HISTSIZE
-HISTDUP=erase
-setopt appendhistory
-setopt sharehistory
-setopt hist_ignore_space
-setopt hist_ignore_all_dups
-setopt hist_save_no_dups
-setopt hist_ignore_dups
-setopt hist_find_no_dups
-
-# Completions
+# configure & load base completions
 source $DOTFILES/zsh/zshrc.d/completions.zsh
 
-# init NVM from wherever it is
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
-# init Herd cli
-[[ -f "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh" ]] && source "/Applications/Herd.app/Contents/Resources/config/shell/zshrc.zsh"
-
-# load nvm completions
-if [[ -d "$(brew --prefix nvm)" ]] && [[ $NVM_DIR != "$HOME/Library/Application Support/Herd/config/nvm" ]]; then
-    # nvm from homebrew
-    \. "$NVM_DIR/etc/bash_completion.d/nvm"
-else
-    # nvm from Herd
-    \. "$NVM_DIR/bash_completion"
-fi
-
-# init fzf & completions
-if type fzf > /dev/null; then
-    if [[ ! -f "$XDG_CACHE_HOME/zsh/fzf_init.zsh" ]]; then
-        fzf --zsh > "$XDG_CACHE_HOME/zsh/fzf_init.zsh"
-    fi
-    source "$XDG_CACHE_HOME/zsh/fzf_init.zsh"
-fi
-
-# init zoxide & completions
-if type zoxide > /dev/null; then
-    if [[ ! -f "$XDG_CACHE_HOME/zsh/zoxide_init.zsh" ]]; then
-        zoxide init zsh > "$XDG_CACHE_HOME/zsh/zoxide_init.zsh"
-    fi
-    source "$XDG_CACHE_HOME/zsh/zoxide_init.zsh"
-fi
-
-# Docker Completions
-if type docker > /dev/null; then
-    if [[ ! -f "$XDG_CACHE_HOME/zsh/docker_init.zsh" ]]; then
-        docker completion zsh > "$XDG_CACHE_HOME/zsh/docker_init.zsh"
-    fi
-    source "$XDG_CACHE_HOME/zsh/docker_init.zsh"
-fi
-
-# Orbstack command-line tools and integration
-if [[ -d ~/.orbstack ]]; then
-    source ~/.orbstack/shell/init.zsh 2>/dev/null || :
-fi
+# load tools
+source $DOTFILES/zsh/zshrc.d/tools.zsh
 
 # Load aliases
 source $DOTFILES/zsh/zshrc.d/aliases.zsh
+
+# Prevent accidental git commands outside intended repo
+[[ -f "$DOTFILES/zsh/zshrc.d/gitguard.zsh" ]] && source $DOTFILES/zsh/zshrc.d/gitguard.zsh
 
 # p10k prompt
 [[ ! -f "$XDG_CONFIG_HOME/zsh/.p10k.zsh" ]] || source "$XDG_CONFIG_HOME/zsh/.p10k.zsh"

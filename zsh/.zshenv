@@ -2,17 +2,22 @@
 # SET GLOBAL ENV FOR ZSH
 # -------------------------
 
-# XDG Directory Configuration - Should work across *nix systems
+# XDG Base Directory Specification
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_DATA_DIRS="$XDG_DATA_HOME:/usr/local/share:/usr/share"
+export XDG_RUNTIME_DIR="$TMPDIR/xdg_runtime"
+
+# Colorization
+export CLICOLOR=1
+export LSCOLORS=ExFxBxDxCxegedabagacad
 
 # Custom Directories
-export DOTFILES="$HOME/Code/github/rginnow/dotfiles"
-export ZINIT_HOME="$XDG_DATA_HOME/zinit/zinit.git"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+export ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+export DOTFILES="$HOME/Code/github/rginnow/dotfiles"
 
 # Other
 export BROWSER="/Applications/Firefox.app"
