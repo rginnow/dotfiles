@@ -33,16 +33,16 @@ zinit light zsh-users/zsh-autosuggestions
 zinit snippet OMZP::git
 
 # configure & load base completions
-source $DOTFILES/zsh/zshrc.d/completions.zsh
+source $XDG_CONFIG_HOME/zsh/zshrc.d/completions.zsh
 
 # load tools
-source $DOTFILES/zsh/zshrc.d/tools.zsh
+source $XDG_CONFIG_HOME/zsh/zshrc.d/tools.zsh
 
 # Load aliases
-source $DOTFILES/zsh/zshrc.d/aliases.zsh
+source $XDG_CONFIG_HOME/zsh/zshrc.d/aliases.zsh
 
 # Prevent accidental git commands outside intended repo
-[[ -f "$DOTFILES/zsh/zshrc.d/gitguard.zsh" ]] && source $DOTFILES/zsh/zshrc.d/gitguard.zsh
+[[ -f "$XDG_CONFIG_HOME/zsh/zshrc.d/gitguard.zsh" ]] && source $XDG_CONFIG_HOME/zsh/zshrc.d/gitguard.zsh
 
 # p10k prompt
 [[ ! -f "$XDG_CONFIG_HOME/zsh/.p10k.zsh" ]] || source "$XDG_CONFIG_HOME/zsh/.p10k.zsh"
