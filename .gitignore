@@ -1,18 +1,13 @@
-# uv binaries
+node_modules/
+.fisher/
+
 bin/uv
 bin/uvx
-
-# local scripts
 bin/local/*
-
+bin/cursor-agent
 git/config_local
-
-.fisher/
-fisher/
-fish_variables
-fishprof*.txt
-
-# zsh
+fish/fish_variables
+fish/fishprof*.txt
 zsh/.zcompdump
 zsh/.zhistory
 zsh/.zsh_history
