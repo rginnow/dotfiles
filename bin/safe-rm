@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # https://github.com/kaelzhang/shell-safe-rm/blob/master/bin/rm.sh
 
 # You could modify these environment variables to change the default constants
@@ -32,7 +32,7 @@ date_time(){
 # tools
 debug(){
     if [[ -n "$SAFE_RM_DEBUG" ]]; then
-        echo "[D] $@" >&2
+        echo "[D]" "$@" >&2
     fi
 }
 
@@ -72,10 +72,10 @@ arg_i=0
 split_push_arg(){
     # remove leading '-' and split combined short options
     # -vif -> vif -> v, i, f
-    split=`echo ${1:1} | fold -w1`
+    split=$(echo "${1:1}" | fold -w1)
 
     local arg
-    for arg in ${split[@]}; do
+    for arg in "${split[@]}"; do
         ARG[arg_i]="-$arg"
         ((arg_i += 1))
     done
@@ -113,12 +113,12 @@ while [[ -n $1 ]]; do
     # Regex in bash is not perl regex,
     # in which `'*'` means "anything" (including nothing)
     -[a-zA-Z]*)
-      split_push_arg $1; debug "short option $1"
+      split_push_arg "$1"; debug "short option $1"
       ;;
 
     # rm --force a
     --[a-zA-Z]*)
-      push_arg $1; debug "option $1"
+      push_arg "$1"; debug "option $1"
       ;;
 
     # rm -- -a
@@ -150,7 +150,7 @@ OPT_VERBOSE=
 EXIT_CODE=0
 
 # parse options
-for arg in ${ARG[@]}; do
+for arg in "${ARG[@]}"; do
   case $arg in
 
   # There's no --help|-h option for rm on Mac OS
@@ -186,7 +186,7 @@ for arg in ${ARG[@]}; do
     ;;
 
   *)
-    invalid_option $arg
+    invalid_option "$arg"
     ;;
   esac
 done
@@ -198,7 +198,7 @@ if [[ ! -e $SAFE_RM_TRASH ]]; then
   echo "Directory \"$SAFE_RM_TRASH\" does not exist, do you want create it?"
   echo -n "(yes/no): "
 
-  read answer
+  read -r answer
   if [[ $answer = "yes" || ! -n $anwser ]]; then
     mkdir -p "$SAFE_RM_TRASH"
   else
@@ -228,7 +228,7 @@ remove(){
 
   if [[ $OPT_INTERACTIVE = 1 ]]; then
     echo -n "examine files in directory $file? "
-    read answer
+    read -r answer
 
     # actually, as long as the answer start with 'y', the file will be removed
     # default to no remove
@@ -239,17 +239,17 @@ remove(){
 
       # interact with the dir at last
       echo -n "remove $file? "
-      read answer
+      read -r answer
       if [[ ${answer:0:1} =~ [yY] ]]; then
-        [[ $(ls -A "$file") ]] && {
+        if [[ $(ls -A "$file") ]]; then
           echo "$COMMAND: $file: Directory not empty"
 
           return 1
 
-        } || {
+        else
           trash "$file"
           debug "$LINENO: trash returned status $?"
-        }
+        fi
       fi
     fi
   else
@@ -261,7 +261,7 @@ remove(){
   else
     if [[ "$OPT_INTERACTIVE" = 1 ]]; then
       echo -n "remove $file? "
-      read answer
+      read -r answer
       if [[ ${answer:0:1} =~ [yY] ]]; then
         :
       else
@@ -277,13 +277,14 @@ remove(){
 
 recursive_remove(){
   local path
+  local list
 
   # use `ls -A` instead of `for` to list hidden files.
   # and `for $1/*` is also weird if `$1` is neithor a dir nor existing that will print "$1/*" directly and rudely.
   # never use `find $1`, for the searching order is not what we want
-  local list=$(ls -A "$1")
+  list=$(ls -A "$1")
 
-  [[ -n $list ]] && for path in "$list"; do
+  [[ -n $list ]] && for path in $list; do
     remove "$1/$path"
   done
 }
@@ -291,15 +292,21 @@ recursive_remove(){
 
 # trash a file or dir directly
 trash(){
+  local file
+  local move
+  local base
+  local travel
+  local trash_name
+
   debug "trash $1"
 
   # origin file path
-  local file=$1
+   file=$1
 
   # the first parameter to be passed to `mv`
-  local move=$file
-  local base=$(basename "$file")
-  local travel=
+   move=$file
+   base=$(basename "$file")
+   travel=
 
   # basename ./       -> .
   # basename ../      -> ..
@@ -307,12 +314,12 @@ trash(){
   # basename ../.abc  -> .abc
   if [[ -d "$file" && ${base:0:1} = '.' ]]; then
     # then file must be a relative dir
-    cd $file
+    cd "$file" || exit 1
 
     # pwd can't be piped?
     move=$(pwd)
     move=$(basename "$move")
-    cd ..
+    cd .. || exit 1
     travel=1
   fi
 
@@ -330,7 +337,7 @@ trash(){
   debug "mv $move to $trash_name"
   mv "$move" "$trash_name"
 
-  [[ "$travel" = 1 ]] && cd $__DIRNAME &> /dev/null
+  [[ "$travel" = 1 ]] && cd "$__DIRNAME" &> /dev/null || exit 1
 
   #default status
   return 0
@@ -340,25 +347,27 @@ trash(){
 # we can't just use `find $file`, 'coz `find` act a inward searching, unlike rm -v
 list_files(){
   if [[ -d "$1" ]]; then
-    local list=$(ls -A "$1")
+    local list
     local f
 
-    [[ -n $list ]] && for f in "$list"; do
+    list=$(ls -A "$1")
+
+    [[ -n $list ]] && for f in $list; do
       list_files "$1/$f"
     done
   fi
 
-  echo $1
+  echo "$1"
 }
 
 
 # debug: get $FILE_NAME array length
-debug "${#FILE_NAME[@]} files or directory to process: ${FILE_NAME[@]}"
+debug "${#FILE_NAME[@]} files or directory to process:" "${FILE_NAME[@]}"
 
 # test remove interactive_once: ask for 3 or more files or with recorsive option
-if [[ (${#FILE_NAME[@]} > 2 || $OPT_RECURSIVE = 1) && $OPT_INTERACTIVE_ONCE = 1 ]]; then
+if [[ (${#FILE_NAME[@]} -gt 2 || $OPT_RECURSIVE = 1) && $OPT_INTERACTIVE_ONCE = 1 ]]; then
   echo -n "$COMMAND: remove all arguments? "
-  read answer
+  read -r answer
 
   # actually, as long as the answer start with 'y', the file will be removed
   # default to no remove
@@ -388,7 +397,7 @@ for file in "${FILE_NAME[@]}"; do
   fi
 
   #the same check also apply on /. /..
-  if [[ $(basename $file) = "." || $(basename $file) = ".." ]]; then
+  if [[ $(basename "$file") = "." || $(basename "$file") = ".." ]]; then
     echo "$COMMAND: \".\" and \"..\" may not be removed"
     EXIT_CODE=1
     continue
@@ -401,8 +410,8 @@ for file in "${FILE_NAME[@]}"; do
   debug "ls_result: $ls_result"
 
   if [[ -n "$ls_result" ]]; then
-    for file in "$ls_result"; do
-      remove "$file"
+    for f in $ls_result; do
+      remove "$f"
       status=$?
       debug "remove returned status: $status"
 

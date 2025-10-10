@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 # Directory containing your theme files
 THEMES_DIR="$XDG_CONFIG_HOME/starship/themes"

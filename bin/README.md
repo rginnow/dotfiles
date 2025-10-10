@@ -6,8 +6,8 @@ This directory holds helper scripts and additional commands.
 
 Some useful tools:
 
-- `create-sshkey` will build you a new SSH key using the new *ed25519* standard, prompting for your email, a name for the new key, and a passphrase.
-- `shell-safe-rm` is a script I found from [mattmc3](https://github.com/mattmc3) that will attempt to safely trash, or delete your file. Not sure how reliable it is, but it seemed like something useful to include.
+- `newssh` will build you a new SSH key using the new *ed25519* standard, prompting for your email, a name for the new key, and a passphrase.
+- `safe-rm` is a script I found from [mattmc3](https://github.com/mattmc3) that will attempt to safely trash, or delete your file. Not sure how reliable it is, but it seemed like something useful to include.
 - `starship-theme` is a helper tool to change the starship theme by using fzf to search the themes directory and selecting it for you.
 - `t` is a helper tool for tmux sessions, taken out of [Jess Archer's dotfiles](https://github.com/jessarcher/dotfiles/tree/master/scripts).
 
