@@ -11,6 +11,10 @@ mouse-hide-while-typing = true
 theme = Catppuccin Mocha
 scrollback-limit = 10_000
 shell-integration = zsh
+macos-titlebar-proxy-icon = hidden
+background-opacity = 1
+background-blur-radius = 0
+unfocused-split-opacity = 1
 
 # font settings
 font-size = 20
@@ -19,3 +23,5 @@ font-family = JetBrainsMono Nerd Font Propo
 # window settings
 window-padding-balance = true
 window-save-state = always
+window-padding-x = 8
+window-padding-y = 8
