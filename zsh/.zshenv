@@ -46,7 +46,7 @@ fi
 
 # Homebrew environment
 if [[ -f "/opt/homebrew/bin/brew" ]] then
-    HOMEBREW_CASK_OPTS="appdir='$HOME/Applications'"
+    export HOMEBREW_CASK_OPTS="appdir='$HOME/Applications'"
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
