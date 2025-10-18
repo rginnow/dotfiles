@@ -22,6 +22,9 @@ alias sym="ln -sf -i"
 alias vim="nvim"
 alias copy="pbcopy < "
 alias please="sudo !!"
+alias path="echo $PATH | tr ':' '\n'"
+alias fpath="echo $fpath | tr ':' '\n'"
+alias wget="wget --hsts-file=$XDG_CACHE_HOME/.wget-hsts"
 
 # Reset project
 alias cleanup="rm -rf node_modules && rm -rf vendor"
@@ -29,6 +32,9 @@ alias refresh="cleanup && npm install && composer install --prefer-dist"
 
 # Applications
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+
+# Ansible
+alias play="ansible-playbook -i ~/.config/ansible/hosts"
 
 # Artisan
 alias tinker="herd tinker"
@@ -41,6 +47,12 @@ alias test="php artisan test"
 alias dump="composer dumpautoload"
 alias optimize="composer dumpautoload -o"
 alias require="composer require"
+
+# Docker
+alias dc="docker compose"
+alias dcup="docker compose up -d"
+alias dcdown="docker compose down"
+alias dcexec="docker compose exec"
 
 # Git
 # see git/config for specific aliases
@@ -77,18 +89,34 @@ alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
 
 # Fuzzy finding with FZF
-if command -v fzf &> /dev/null
-then
+if command -v fzf &> /dev/null; then
     alias fzfp="fzf --tmux 80% --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
     alias preview="fzf --preview 'fzf-preview.sh {}'"
 
     alias env="printenv | fzf"
-    alias path="echo -e ${PATH//:/\n} | fzf"
-    alias fpath="echo -e ${fpath//:/\n} | fzf"
+    alias path="echo $PATH | tr ':' '\n' | fzf"
+    alias fpath="echo $FPATH | tr ':' '\n' | fzf"
+fi
+
+# Use NVM if Herd or NVM is already installed, otherwise use FNM
+if ! command -v nvm &> /dev/null; then
+    alias nvm="fnm"
 fi
 
 # Reload ZSH
 function reload() {
     exec zsh
     /usr/bin/clear
+}
+
+# function to lookup documentation on cht.sh
+function cht() {
+  local query="${(j:+:)@}"
+  curl -s "cht.sh/$query" | bat --style=plain
+}
+
+# function to gauge zsh's startup time
+function timezsh() {
+  shell=${1-$SHELL}
+  for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
 }
