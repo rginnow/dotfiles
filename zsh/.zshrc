@@ -1,3 +1,8 @@
+# If using Kitty, auto-start tmux
+if [[ -z "$TMUX" ]] && [[ "$TERM" = "xterm-kitty" ]]; then
+  tmux attach || exec tmux new-session && exit;
+fi
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -5,44 +10,68 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# -------------------------
+# Configure Options
+# -------------------------
+
 # Ensure XDG directories exist
 mkdir -p ~/{.config,.cache,.local/share,.local/state}
 
-# configure base zsh options (setopt)
-source $DOTFILES/zsh/zshrc.d/options.zsh
+source $XDG_CONFIG_HOME/zsh/zshrc.d/options.zsh
 
-# Download and initialize Zinit, if it's not there yet
-[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
-[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-source "${ZINIT_HOME}/zinit.zsh"
+# Use degit instead of git as the default tool to install and update modules.
+zstyle ':zim:zmodule' use 'degit'
 
-# Load powerlevel10k theme
-zinit ice depth=1 # git clone depth
-zinit light romkatv/powerlevel10k
+# set completion options
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/compcache"
 
-# Add zsh plugins
-zinit light Aloxaf/fzf-tab
-zinit light zsh-users/zsh-syntax-highlighting
-zinit light zsh-users/zsh-completions
-zinit light zsh-users/zsh-autosuggestions
+# -------------------------
+# Initialize Zim + Modules
+# -------------------------
 
-# Load an nvm plugin if we don't have Herd
-[[ ! -d "/Applications/Herd.app" ]] && zinit light lukechilds/zsh-nvm
+# Download zimfw plugin manager if missing.
+if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
+  if (( ${+commands[curl]} )); then
+    curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
+        https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
+  else
+    mkdir -p ${ZIM_HOME} && wget -nv -O ${ZIM_HOME}/zimfw.zsh \
+        https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
+  fi
+fi
 
-# Add in snippets
-zinit snippet OMZP::git
+# Install missing modules, and update ${ZIM_HOME}/init.zsh if missing or outdated.
+if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
+  source ${ZIM_HOME}/zimfw.zsh init -q
+fi
 
-# configure & load base completions
-source $XDG_CONFIG_HOME/zsh/zshrc.d/completions.zsh
+# Initialize modules.
+source ${ZIM_HOME}/init.zsh
 
-# load tools
-source $XDG_CONFIG_HOME/zsh/zshrc.d/tools.zsh
+# Initialize zsh-defer.
+source ${ZIM_HOME}/modules/zsh-defer/zsh-defer.plugin.zsh
 
-# Load aliases
-source $XDG_CONFIG_HOME/zsh/zshrc.d/aliases.zsh
+# Defer evals and cache the results on first run via the evalcache plugin (clear the cache w/ `_evalcache_clear`).
+zsh-defer _evalcache docker completion zsh
+zsh-defer _evalcache fnm env --use-on-cd --shell zsh
+zsh-defer _evalcache fzf --zsh
+zsh-defer _evalcache zoxide init zsh
+
+# Orbstack command-line tools and integration
+if [[ -d ~/.orbstack ]]; then
+    source ~/.orbstack/shell/init.zsh 2>/dev/null || :
+fi
+
+# -------------------------
+# User Configuration
+# -------------------------
+
+# Load personal aliases
+[[ -f "$XDG_CONFIG_HOME/zsh/zshrc.d/aliases.zsh" ]] && source $XDG_CONFIG_HOME/zsh/zshrc.d/aliases.zsh
 
 # Prevent accidental git commands outside intended repo
 [[ -f "$XDG_CONFIG_HOME/zsh/zshrc.d/gitguard.zsh" ]] && source $XDG_CONFIG_HOME/zsh/zshrc.d/gitguard.zsh
 
 # p10k prompt
-[[ ! -f "$XDG_CONFIG_HOME/zsh/.p10k.zsh" ]] || source "$XDG_CONFIG_HOME/zsh/.p10k.zsh"
+[[ -f "$XDG_CONFIG_HOME/zsh/.p10k.zsh" ]] && source "$XDG_CONFIG_HOME/zsh/.p10k.zsh"
