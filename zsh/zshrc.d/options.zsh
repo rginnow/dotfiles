@@ -2,12 +2,8 @@
 # ZSH OPTIONS
 # -------------------------
 
-# Set up Zsh key bindings
-bindkey -e
-
-# Use up/down for history search for a given input
-bindkey '^[[A' history-search-backward
-bindkey '^[[B' history-search-forward
+# Set editor default keymap to emacs (`-e`) or vi (`-v`)
+bindkey -v
 
 # History Settings
 export HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/.zsh_history"
