@@ -1,0 +1,23 @@
+- name: Update Raspberry Pi Servers
+  hosts: raspberrypi
+
+  tasks:
+    - name: Update packages
+      become: true
+      apt:
+        update_cache: true
+        cache_valid_time: 86400
+        upgrade: "yes"
+        state: latest
+        autoremove: true
+        purge: true
+      register: pkg_updates
+
+    - name: List installed and updated packages
+      shell: grep -E "^$(date +%Y-%m-%d).+ (install|upgrade|remove) " /var/log/dpkg.log |cut -d " " -f 3-5
+      register: result
+      when: pkg_updates.changed
+
+    - name: Show Output
+      debug: msg="{{ result.stdout_lines }}"
+      when: pkg_updates.changed
