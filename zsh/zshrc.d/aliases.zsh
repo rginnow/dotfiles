@@ -103,13 +103,18 @@ if ! command -v nvm &> /dev/null; then
     alias nvm="fnm"
 fi
 
-# Reload ZSH
-function reload() {
-    exec zsh
-    /usr/bin/clear
+# clear zsh cache
+function zsh_clear_cache() {
+    _evalcache_clear # clear evalcache
+    rehash # force rehash of completions
 }
 
-# function to lookup documentation on cht.sh
+# Reload ZSH
+function zsh_reload() {
+    exec zsh
+}
+
+# function to lookup documentation on cht.sh, alternative to TLDR
 function cht() {
   local query="${(j:+:)@}"
   curl -s "cht.sh/$query" | bat --style=plain

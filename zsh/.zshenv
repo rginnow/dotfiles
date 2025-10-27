@@ -1,47 +1,51 @@
 # -------------------------
-# System Environment Variables
+# Set System Variables
 # -------------------------
 
 # XDG Base Directory Specification
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_STATE_HOME="$HOME/.local/state"
-export XDG_DATA_DIRS="$XDG_DATA_HOME:/usr/local/share:/usr/share"
-export XDG_RUNTIME_DIR="$TMPDIR/xdg_runtime"
+export XDG_CACHE_HOME="$HOME/.cache" \
+       XDG_CONFIG_HOME="$HOME/.config" \
+       XDG_DATA_HOME="$HOME/.local/share" \
+       XDG_STATE_HOME="$HOME/.local/state" \
+       XDG_DATA_DIRS="$XDG_DATA_HOME:/usr/local/share:/usr/share" \
+       XDG_RUNTIME_DIR="$TMPDIR/xdg_runtime"
 
-# Customize Shell Directories
-export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-export ZIM_HOME="$XDG_DATA_HOME/zim"
-export ZIM_CONFIG_FILE="$ZDOTDIR/.zimrc"
-export ZSH_EVALCACHE_DIR="$XDG_CACHE_HOME/zsh/evalcache"
-export ZSH_COMPDUMP_DIR="$XDG_CACHE_HOME/zsh/"
+# Customize Zsh-specific Directories
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh" \
+       ZSH_EVALCACHE_DIR="$XDG_CACHE_HOME/zsh/evalcache" \
+       ZSH_COMPDUMP_DIR="$XDG_CACHE_HOME/zsh/compdump"
+
+# Zim Configuration Files
+export ZIM_CONFIG_FILE="$ZDOTDIR/.zimrc" \
+       ZIM_HOME="$XDG_DATA_HOME/zim"
 
 # Other Package Managers and Directory Customizations
-export ANSIBLE_HOME="$XDG_CONFIG_HOME/ansible"
-export BAT_CONFIG_DIR="$XDG_CONFIG_HOME/bat"
-export BAT_CONFIG_PATH="$XDG_CONFIG_HOME/bat/bat.conf"
-export BUN_INSTALL="$XDG_DATA_HOME/.bun"
-export COMPOSER_HOME="$XDG_DATA_HOME/.composer"
-export EZA_CONFIG_DIR="$XDG_CONFIG_HOME/eza/"
-export FZF_DEFAULT_OPTS_FILE="$XDG_CONFIG_HOME/fzf/config"
-export GOPATH="$XDG_DATA_HOME/.go"
-export GOROOT="/opt/homebrew/opt/golang/libexec"
-export HEX_HOME="$XDG_DATA_HOME/.hex"
-export LESSHISTFILE="$XDG_DATA_HOME/.lesshst"
-export MIX_HOME="$XDG_DATA_HOME/.mix"
-export TF_CLI_CONFIG_FILE="$XDG_CONFIG_HOME/terraform/.terraformrc"
-export TF_PLUGIN_CACHE_DIR="$XDG_CACHE_HOME/.terraform.d/plugin-cache"
-export TLRC_CONFIG="$XDG_CONFIG_HOME/tldr/config.toml"
+export ANSIBLE_HOME="$XDG_CONFIG_HOME/ansible" \
+       BAT_CONFIG_DIR="$XDG_CONFIG_HOME/bat" \
+       BAT_CONFIG_PATH="$XDG_CONFIG_HOME/bat/bat.conf" \
+       BUN_INSTALL="$XDG_DATA_HOME/.bun" \
+       COMPOSER_HOME="$XDG_DATA_HOME/.composer" \
+       EZA_CONFIG_DIR="$XDG_CONFIG_HOME/eza/" \
+       FZF_DEFAULT_OPTS_FILE="$XDG_CONFIG_HOME/fzf/config" \
+       GNUPGHOME="$XDG_DATA_HOME/.gnupg" \
+       GOPATH="$XDG_DATA_HOME/.go" \
+       GOROOT="/opt/homebrew/opt/golang/libexec" \
+       HEX_HOME="$XDG_DATA_HOME/.hex" \
+       LESSHISTFILE="$XDG_DATA_HOME/.lesshst" \
+       MIX_HOME="$XDG_DATA_HOME/.mix" \
+       TF_CLI_CONFIG_FILE="$XDG_CONFIG_HOME/terraform/.terraformrc" \
+       TF_PLUGIN_CACHE_DIR="$XDG_CACHE_HOME/.terraform.d/plugin-cache" \
+       TLRC_CONFIG="$XDG_CONFIG_HOME/tldr/config.toml" \
+       USER_BIN_DIR="$HOME/.local/bin"
 
 # Other
-export DOTFILES="$HOME/Code/github/rginnow/dotfiles"
-export BROWSER="/Applications/Brave Browser.app"
+export DOTFILES="$HOME/Code/github/rginnow/dotfiles" \
+       BROWSER="/Applications/Brave Browser.app"
 
 # Colorization
-export CLICOLOR=1
-export LSCOLORS="Gxfxcxdxbxegedabagacad"
-export LS_COLORS="di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
+export CLICOLOR=1 \
+       LSCOLORS="Gxfxcxdxbxegedabagacad" \
+       LS_COLORS="di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
 
 # Set the GPG_TTY to be the same as the TTY
 # either via the env var or via the tty command.
@@ -53,37 +57,11 @@ fi
 
 # Preferred editor for local and remote sessions
 if [[ -n "$SSH_CONNECTION" ]]; then
-    export EDITOR='vim'
-    export GIT_EDITOR="vim"
+    export EDITOR='vim' \
+           GIT_EDITOR="vim"
 else
-    export EDITOR='nvim'
-    export GIT_EDITOR="nvim"
-fi
-
-# Homebrew environment
-if [[ -f "/opt/homebrew/bin/brew" ]]; then
-    export HOMEBREW_CASK_OPTS="appdir='$HOME/Applications'"
-    if [[ ! -f "$XDG_CACHE_HOME/zsh/brew_init.zsh" ]]; then
-        command brew shellenv > "$XDG_CACHE_HOME/zsh/brew_init.zsh"
-    fi
-    source "$XDG_CACHE_HOME/zsh/brew_init.zsh"
-else
-    echo "Homebrew not found. Installing..."
-    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-fi
-
-# Check for Laravel Herd
-if [[ -d "/Applications/Herd.app" ]]; then
-    # Laravel Herd Environment Variables
-    export HERD_PHP_83_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/83/"
-    export HERD_PHP_84_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/84/"
-    export HERD_PHP_85_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/85/"
-
-    # Set NVM Directory
-    export NVM_DIR="$HOME/Library/Application Support/Herd/config/nvm"
-
-    # Set path for CLI tools
-    export PATH="$HOME/Library/Application Support/Herd/bin:$PATH"
+    export EDITOR='nvim' \
+           GIT_EDITOR="nvim"
 fi
 
 # FZF Color Theme

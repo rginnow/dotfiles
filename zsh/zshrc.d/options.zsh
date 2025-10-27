@@ -6,10 +6,10 @@
 bindkey -v
 
 # History Settings
-export HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/.zsh_history"
-export HISTSIZE=10000
-export SAVEHIST=10000
-export HISTDUP=erase
+export HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/.zsh_history" \
+       HISTSIZE=10000 \
+       SAVEHIST=10000 \
+       HISTDUP=erase
 
 # History options
 setopt APPEND_HISTORY

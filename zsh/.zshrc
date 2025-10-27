@@ -1,3 +1,20 @@
+# Ensure XDG directories exist
+mkdir -p ~/{.config,.cache,.local/share,.local/state}
+
+# Create the zsh cache directory if it doesn't exist
+[[ -d "$XDG_CACHE_HOME/zsh" ]] || mkdir -p "$XDG_CACHE_HOME/zsh"
+
+# Homebrew environment
+if [[ -f "/opt/homebrew/bin/brew" ]]; then
+    export HOMEBREW_CASK_OPTS="appdir='$HOME/Applications'"
+    if [[ ! -f "$XDG_CACHE_HOME/zsh/brew_init.zsh" ]]; then
+        command brew shellenv > "$XDG_CACHE_HOME/zsh/brew_init.zsh"
+    fi
+    source "$XDG_CACHE_HOME/zsh/brew_init.zsh"
+else
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
 # If using Kitty, auto-start tmux
 if [[ -z "$TMUX" ]] && [[ "$TERM" = "xterm-kitty" ]]; then
   tmux attach || exec tmux new-session && exit;
@@ -10,21 +27,26 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Check for Laravel Herd
+if [[ -d "/Applications/Herd.app" ]]; then
+    export HERD_PHP_83_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/83/" \
+           HERD_PHP_84_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/84/" \
+           HERD_PHP_85_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/85/" \
+           NVM_DIR="$HOME/Library/Application Support/Herd/config/nvm" \
+           PATH="$HOME/Library/Application Support/Herd/bin:$PATH"
+fi
+
+
 # -------------------------
 # Configure Options
 # -------------------------
 
-# Ensure XDG directories exist
-mkdir -p ~/{.config,.cache,.local/share,.local/state}
-
 source $XDG_CONFIG_HOME/zsh/zshrc.d/options.zsh
+
+source $XDG_CONFIG_HOME/zsh/zshrc.d/completions.zsh
 
 # Use degit instead of git as the default tool to install and update modules.
 zstyle ':zim:zmodule' use 'degit'
-
-# set completion options
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/compcache"
 
 # -------------------------
 # Initialize Zim + Modules
