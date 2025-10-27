@@ -1,7 +1,8 @@
 {
   "files.associations": {
     "*.theme": "fish",
-    "*.conf": "shellscript"
+    "*.conf": "shellscript",
+    ".zimrc": "shellscript"
   },
   "editor.wordWrap": "off"
 }
