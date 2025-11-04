@@ -17,7 +17,7 @@ fi
 
 # If using Kitty, auto-start tmux
 if [[ -z "$TMUX" ]] && [[ "$TERM" = "xterm-kitty" ]]; then
-  tmux attach || exec tmux new-session && exit;
+  exec tmux new-session -A -s main && exit;
 fi
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
