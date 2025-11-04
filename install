@@ -50,10 +50,35 @@ backup_config() {
 
 # Link some configs
 link_configs() {
+    # Ansible
+    echo "Linking Ansible config..."
+    backup_config "ansible"
+    ln -sf "$DOTFILES/ansible" "$CONFIG_HOME/ansible"
+
     # Bat
     echo "Linking Bat config..."
     backup_config "bat"
     ln -sf "$DOTFILES/bat" "$CONFIG_HOME/bat"
+
+    # Cursor
+    echo "Linking Cursor config..."
+    backup_config "cursor"
+    ln -sf "$DOTFILES/cursor" "$CONFIG_HOME/cursor"
+
+    # Eza
+    echo "Linking Eza config..."
+    backup_config "eza"
+    ln -sf "$DOTFILES/eza" "$CONFIG_HOME/eza"
+
+    # Fish - NOT BEING USED
+    # echo "Linking Fish config..."
+    # backup_config "fish"
+    # ln -sf "$DOTFILES/fish" "$CONFIG_HOME/fish"
+
+    # Fzf
+    echo "Linking Fzf config..."
+    backup_config "fzf"
+    ln -sf "$DOTFILES/fzf" "$CONFIG_HOME/fzf"
 
     # Ghostty
     if [ "$PLATFORM" = "Darwin" ]; then
@@ -77,6 +102,11 @@ link_configs() {
     backup_config "nvim"
     ln -sf "$DOTFILES/nvim" "$CONFIG_HOME/nvim"
 
+    # Starship - NOT BEING USED
+    # echo "Linking Starship config..."
+    # backup_config "starship"
+    # ln -sf "$DOTFILES/starship" "$CONFIG_HOME/starship"
+
     # TLDR/TLRC
     echo "Linking TLDR config..."
     backup_config "tldr"
@@ -87,13 +117,10 @@ link_configs() {
     backup_config "tmux"
     ln -sf "$DOTFILES/tmux" "$CONFIG_HOME/tmux"
 
-    # Scripts
-    echo "Linking custom bin scripts..."
-    if [ -d "$HOME/.local/bin" ]; then
-        mkdir -p "$HOME/.backups/bin"
-        mv "$HOME/.local/bin" "$HOME/.backups/bin"
-    fi
-    ln -sf "$DOTFILES/bin" "$HOME/.local/bin"
+    # VS Code
+    echo "Linking VS Code config..."
+    backup_config "vscode"
+    ln -sf "$DOTFILES/vscode" "$CONFIG_HOME/vscode"
 
     # ZSH
     echo "Linking ZSH config..."
@@ -109,4 +136,13 @@ link_configs() {
 echo "Starting installation..."
 run_install
 link_configs
+
+# Scripts
+echo "Linking custom bin scripts..."
+if [ -d "$HOME/.local/bin" ]; then
+    mkdir -p "$HOME/.backups/bin"
+    mv "$HOME/.local/bin" "$HOME/.backups/bin"
+fi
+ln -sf "$DOTFILES/bin" "$HOME/.local/bin"
+
 echo "Installation complete!"
