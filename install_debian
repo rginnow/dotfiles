@@ -1,80 +1,153 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-# Intent here is mainly for a first time install on my personal
-# Raspberry Pi setup and Debian servers.
+# A simple install script for Debian systems, including Raspberry Pi,
+# it will handle gathering dependencies and tools for a first time install.
 
-install_bun() {
-    # Check if bun is already installed
-    if command -v bun >/dev/null 2>&1; then
-        echo "Bun is already installed. Continuing..."
-    else
-        # Install bun
-        echo "Installing bun..."
-        curl -fsSL https://bun.sh/install | bash
-        echo "Bun installed."
-    fi
+install_dependencies() {
+    # Set up dependency list
+    DEPENDENCIES=(
+        "build-essential"
+        "ca-certificates"
+        "curl"
+        "git"
+        "gnupg2"
+        "openssl"
+        "vim"
+        "wget"
+    )
+
+    TOOLS=(
+        "bat"
+        "cowsay"
+        "direnv"
+        "fastfetch"
+        "fd-find"
+        "fzf"
+        "jq"
+        "lolcat"
+        "neovim"
+        "nmap"
+        "rclone"
+        "ripgrep"
+        "tmux"
+    )
+
+    for package in "${DEPENDENCIES[@]}"; do
+        if ! dpkg -l | grep -q "$package"; then
+            echo "Installing $package..."
+            apt install -y "$package"
+        else
+            echo "$package is already installed. Continuing..."
+        fi
+    done
+
+    for tool in "${TOOLS[@]}"; do
+        if ! dpkg -l | grep -q "$tool"; then
+            echo "Installing $tool..."
+            apt install -y "$tool"
+        else
+            echo "$tool is already installed. Continuing..."
+        fi
+    done
 }
 
-install_eza() {
-    # Check if eza is already installed
-    if command -v eza >/dev/null 2>&1; then
-        echo "Eza is already installed. Continuing..."
-    else
-        echo "Installing eza..."
+install_tools() {
+    # Set up dependency list
+    TOOLS=(
+        "bun"
+        "docker"
+        "eza"
+        "zoxide"
+    )
+    INSTALL_COMMANDS=(
+        "curl -fsSL https://bun.sh/install | bash"
+        "curl -sSL https://get.docker.com | sh && sudo usermod -aG docker $USER"
+        "sudo apt install -y eza"
+        "curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh"
+    )
 
-        # Gotta grab the gpg keys first...
-        sudo mkdir -p /etc/apt/keyrings
-        wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
-        echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
-        sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+    for i in "${!TOOLS[@]}"; do
+        tool="${TOOLS[i]}"
+        install_command="${INSTALL_COMMANDS[i]}"
 
-        # Update the package list and install eza
-        sudo apt update
-        sudo apt install -y eza
-
-        echo "Eza installed."
-    fi
+        if ! command -v "$tool" >/dev/null 2>&1; then
+            echo "Installing $tool..."
+            eval "$install_command"
+        else
+            echo "$tool is already installed. Continuing..."
+        fi
+    done
 }
 
 install_nvm() {
-    # Check if nvm is already installed
+    LATEST_VERSION=$(curl -s "https://api.github.com/repos/nvm-sh/nvm/releases/latest" | grep -o '"tag_name": "[^"]*"' | sed 's/"tag_name": "\(.*\)"/\1/')
+
     if command -v nvm >/dev/null 2>&1; then
-        echo "NVM is already installed. Continuing..."
+        echo "Updating NVM to version $LATEST_VERSION"
     else
-        # Install nvm
-        echo "Installing NVM..."
-        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
-        echo "NVM installed."
+        echo "Installing NVM version $LATEST_VERSION"
     fi
-    # Loading NVM into the shell should already be in the respective shell config
+
+    curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/$LATEST_VERSION/install.sh" | bash
+    echo "NVM installed."
 }
 
-# Get fresh apt packages
+set_keyrings() {
+    echo "Setting up keyrings..."
+
+    # Create the keyrings directory if it doesn't exist
+    sudo mkdir -p /etc/apt/keyrings
+
+    # Create a list of GPG keys to download
+    KEYURLS=(
+        "https://raw.githubusercontent.com/eza-community/eza/main/deb.asc"
+    )
+    KEYNAMES=(
+        "gierens"
+    )
+    KEYREPOS=(
+        "http://deb.gierens.de"
+    )
+
+    # Download each GPG key and add it to the keyring
+    for i in "${!KEYURLS[@]}"; do
+        url="${KEYURLS[i]}"
+        name="${KEYNAMES[i]}"
+        repo="${KEYREPOS[i]}"
+
+        # 1. Get the key
+        echo "Downloading key $name from: $url"
+        wget -qO- "$url" | sudo gpg --dearmor -o "/etc/apt/keyrings/${name}.gpg"
+
+        # 2. Add the repository to the sources list
+        echo "deb [signed-by=/etc/apt/keyrings/${name}.gpg] ${repo} stable main" | sudo tee "/etc/apt/sources.list.d/${name}.list"
+
+        # 3. Set the permissions
+        sudo chmod 644 "/etc/apt/keyrings/${name}.gpg" "/etc/apt/sources.list.d/${name}.list"
+    done
+
+    # Update the package list
+    sudo apt update
+
+    echo "Keyring setup complete."
+}
+
+# Do a system update
+echo "Preparing system update..."
+sudo apt update
+
 echo "Running update..."
-sudo apt update && sudo apt -y upgrade
+sudo apt -y upgrade
 
-# Set up dependency list
-set -- bat build-essential ca-certificates curl direnv fastfetch fd-find fzf git gpg neovim ripgrep vim wget
-
-echo "Installing dependencies..."
-for package in "$@"; do
-    if ! dpkg -l | grep -q "$package"; then
-        echo "Installing $package..."
-        apt install -y "$package"
-    else
-        echo "$package is already installed. Continuing..."
-    fi
-done
-echo "Dependency install finished."
-
-# Install other items
-install_bun
-install_eza
+set_keyrings
+install_dependencies
+install_tools
 install_nvm
-
 
 # Cleanup
 echo "Cleaning up..."
+sudo apt autoremove -y
+sudo apt clean
 
 # Symlink to bind fd-find to fd instead
 ln -s "$(which fdfind)" "$HOME/.local/bin/local/fd"

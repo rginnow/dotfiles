@@ -1,22 +1,12 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-# Trying to make this script as platform agnostic as possible
-# but it is mainly for my personal use on MacOS and Debian systems.
+# This script is designed to be platform agnostic, but primarily
+# for MacOS and Debian systems. It will install dependencies and
+# tools for a first time install, and link some configs.
 
 #####################
 # Basic Environment #
 #####################
-
-# Set up some directory locations
-DOTFILES=$(cd "$(dirname "$0")" && pwd)
-CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
-DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
-# STATE_HOME=${XDG_STATE_HOME:-$HOME/.local/state}
-CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
-
-# Set the platform variable
-PLATFORM=$(uname -s)
-IS_DEBIAN=$([ "$PLATFORM" = "Linux" ] && [ "$(lsb_release -i | cut -f 2-)" = "Debian" ])
 
 # Check if the script is run as root
 if [ "$(id -u)" -eq 0 ]; then
@@ -24,202 +14,91 @@ if [ "$(id -u)" -eq 0 ]; then
     exit 1
 fi
 
+# Set up some variables for the script
+DOTFILES=$(cd "$(dirname "$0")" && pwd)
+CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+PLATFORM=$(uname -s)
+IS_DEBIAN=$([ "$PLATFORM" = "Linux" ] && [ "$(lsb_release -i | cut -f 2-)" = "Debian" ])
+
 
 #############
 # Functions #
 #############
 
-# Install dependencies based on the platform
-install_dependencies() {
-    echo "Installing platform dependencies..."
-
+# Run platform specific installation scripts
+run_install() {
     if [ "$PLATFORM" = "Darwin" ]; then
-        echo "MacOS detected. Installing with ruby and homebrew..."
+        echo "MacOS detected."
         (sh ./install_mac)
     elif [ "$IS_DEBIAN" ]; then
-        echo "Debian detected. Installing with apt..."
-        (sh ./install_debian)
+        echo "Debian detected."
+        (bash ./install_debian)
     else
-        echo "Unsupported platform. Can't install dependencies. Exiting..."
+        echo "Unsupported platform. Can't continue installation. Exiting..."
         exit 1
     fi
 }
 
-# Check if the config directory already exists
-check_config_exists() {
+# Backup a config directory if it already exists
+backup_config() {
     if [ -d "${CONFIG_HOME:?}/$1" ]; then
-        echo "$1 config directory already exists. Do you want to remove it? (y/n)"
-        read -r REMOVE_CONFIG
-        if [ "$REMOVE_CONFIG" = "y" ]; then
-            echo "Removing old $1 config..."
-            rm -rf "${CONFIG_HOME:?}/$1"
-        else
-            echo "Keeping old $1 config..."
-            return 1
-        fi
+        mkdir -p "$HOME/.backups/$1"
+        mv "$CONFIG_HOME/$1" "$HOME/.backups/$1"
     fi
     return 0
 }
 
 # Link some configs
 link_configs() {
-
-    # TLDR (TLRC) config
-    # NOTE: TLDR is installed by brew under TLRC on a Mac
-    # NOTE: Not avaialble on apt yet, so must use the node version
-    if check_config_exists "tldr"; then
-        echo "Linking TLDR config..."
-        ln -sf "$DOTFILES/tldr" "$CONFIG_HOME/tldr"
-    fi
-
-    # Neovim
-    if check_config_exists "nvim"; then
-        echo "Linking Neovim config..."
-        ln -sf "$DOTFILES/nvim" "$CONFIG_HOME/nvim"
-    fi
-
     # Bat
-    if check_config_exists "bat"; then
-        echo "Linking Bat config..."
-        ln -sf "$DOTFILES/bat" "$CONFIG_HOME/bat"
+    echo "Linking Bat config..."
+    backup_config "bat"
+    ln -sf "$DOTFILES/bat" "$CONFIG_HOME/bat"
+
+    # Ghostty
+    if [ "$PLATFORM" = "Darwin" ]; then
+        echo "Linking Ghostty config..."
+        backup_config "ghostty"
+        ln -sf "$DOTFILES/ghostty" "$CONFIG_HOME/ghostty"
     fi
 
     # Git
-    if check_config_exists "git"; then
-        echo "Linking Git config..."
-        ln -sf "$DOTFILES/git" "$CONFIG_HOME/git"
-    fi
+    echo "Linking Git config..."
+    backup_config "git"
+    ln -sf "$DOTFILES/git" "$CONFIG_HOME/git"
+
+    # Kitty
+    echo "Linking Kitty config..."
+    backup_config "kitty"
+    ln -sf "$DOTFILES/kitty" "$CONFIG_HOME/kitty"
+
+    # Neovim
+    echo "Linking Neovim config..."
+    backup_config "nvim"
+    ln -sf "$DOTFILES/nvim" "$CONFIG_HOME/nvim"
+
+    # TLDR/TLRC
+    echo "Linking TLDR config..."
+    backup_config "tldr"
+    ln -sf "$DOTFILES/tldr" "$CONFIG_HOME/tldr"
+
+    # Tmux
+    echo "Linking Tmux config..."
+    backup_config "tmux"
+    ln -sf "$DOTFILES/tmux" "$CONFIG_HOME/tmux"
 
     # Scripts
+    echo "Linking custom bin scripts..."
     if [ -d "$HOME/.local/bin" ]; then
-        echo "$HOME/.local/bin config directory already exists. Do you want to replace it? (y/n)"
-        read -r REMOVE_CONFIG
-        if [ "$REMOVE_CONFIG" = "y" ]; then
-            echo "Removing old bin scripts..."
-            rm -rf "$HOME/.local/bin"
-
-            echo "Linking custom bin scripts..."
-            ln -s "$DOTFILES/bin" "$HOME/.local/bin"
-        else
-            echo "Keeping old scripts..."
-        fi
+        mkdir -p "$HOME/.backups/bin"
+        mv "$HOME/.local/bin" "$HOME/.backups/bin"
     fi
+    ln -sf "$DOTFILES/bin" "$HOME/.local/bin"
 
-    # Only need certain app configs if we're installing on Mac
-    if [ "$PLATFORM" = "Darwin" ]; then
-        # Kitty
-        if check_config_exists "kitty"; then
-            echo "Linking Kitty config..."
-            ln -sf "$DOTFILES/kitty" "$CONFIG_HOME/kitty"
-        fi
-
-        # Ghostty
-        if check_config_exists "ghostty"; then
-            echo "Linking Ghostty config..."
-            ln -sf "$DOTFILES/ghostty" "$CONFIG_HOME/ghostty"
-        fi
-
-        # Tmux
-        if check_config_exists "tmux"; then
-            echo "Linking Tmux config..."
-            ln -sf "$DOTFILES/tmux" "$CONFIG_HOME/tmux"
-        fi
-    fi
-}
-
-# Clear previous fish setups, link a Fish config
-link_fish() {
-    # check if the fish config already exists
-    if [ -d "$CONFIG_HOME/fish" ]; then
-        echo "Fish config already exists. Do you want to remove it? (y/n)"
-        read -r REMOVE_FISH
-        if [ "$REMOVE_FISH" = "y" ]; then
-            echo "Removing old Fish config..."
-            rm -rf "$CONFIG_HOME/fish"
-            rm -rf "$CACHE_HOME/fish"
-            rm -rf "$DATA_HOME/fish"
-
-            echo "Using fresh Fish config files..."
-            ln -sf "$DOTFILES/fish" "$CONFIG_HOME/fish"
-        else
-            echo "Keeping old Fish config..."
-        fi
-    else
-        echo "Linking Fish files..."
-        ln -sf "$DOTFILES/fish" "$CONFIG_HOME/fish"
-    fi
-}
-
-# Install Fish shell if not already installed
-install_fish() {
-    if [ "$(command -v fish >/dev/null 2>&1)" ]; then
-        echo "Fish shell already found, continuing..."
-    else
-        if [ "$IS_DEBIAN" ]; then
-            echo "Installing Fish shell..."
-            apt install fish
-            echo "Fish shell installed."
-        else
-            echo "Unknown platform. Can't install Fish shell. Exiting..."
-            exit 1
-        fi
-    fi
-}
-
-# Link the ZSH config
-link_zsh() {
-    echo "Linking ZSH files..."
-    ln -sf "$DOTFILES/zsh/zshrc" "$HOME/.zshrc"
-    ln -sf "$DOTFILES/zsh/aliases" "$HOME/.aliases"
-    ln -sf "$DOTFILES/zsh/p10k.zsh" "$HOME/.p10k.zsh"
-}
-
-# Install ZSH shell if not already installed
-install_zsh() {
-    if [ ! "$(type zsh >/dev/null 2>&1)" ]; then
-        echo "ZSH shell already found, continuing..."
-    else
-        if [ "$IS_DEBIAN" ]; then
-           echo "Installing ZSH shell..."
-           apt install zsh --quiet
-           echo "ZSH shell installed."
-        else
-            echo "Unknown platform. Can't install ZSH shell. Exiting..."
-            exit 1
-        fi
-    fi
-}
-
-# Install OMZ (Oh My Zsh)
-install_omz() {
-    # Oh My ZSH
-    echo "Installing Oh My ZSH..."
-    if [ ! -d "$HOME/.oh-my-zsh" ]; then
-        KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-        echo "Oh My ZSH installed."
-    else
-        echo "Oh My ZSH is already installed!"
-    fi
-
-    echo "Installing Oh My ZSH plugins..."
-    sh "$DOTFILES/zsh/install_plugins.sh"
-}
-
-# Install Starship prompt
-install_starship() {
-    echo "Linking Starship files..."
-    rm -rf "$CONFIG_HOME/starship"
-    ln -sf "$DOTFILES/starship" "$CONFIG_HOME/starship"
-
-    if [ "$PLATFORM" = 'Darwin' ]; then
-        # installed already via homebrew
-        exit
-    fi
-
-    echo "Installing Starship Prompt..."
-    curl -sS https://starship.rs/install.sh | sh
-
-    echo "Starship installed."
+    # ZSH
+    echo "Linking ZSH config..."
+    backup_config "zsh"
+    ln -sf "$DOTFILES/zsh/.zshenv" "$HOME/.zshenv"
 }
 
 
@@ -228,42 +107,6 @@ install_starship() {
 ###############
 
 echo "Starting installation..."
-
-install_dependencies
-
-# ask if the user wants to install fish or zsh
-echo "Which shell would do you intend to use? (bash/fish/zsh/other)"
-read -r SHELL
-
-case "$SHELL" in
-    bash)
-        echo "Bash shell selected."
-        # just install starship, it can still be used in bash
-        install_starship
-
-        # add starship to bashrc
-        if ! grep -q "eval \"\$(starship init bash)\"" "$HOME/.bashrc"; then
-            echo 'eval "$(starship init bash)"' >> "$HOME/.bashrc"
-            echo "Starship added to .bashrc."
-        else
-            echo "Starship already in .bashrc."
-        fi
-        ;;
-    fish)
-        echo "Fish shell selected."
-        link_fish
-        install_fish
-        install_starship
-        ;;
-    zsh)
-        echo "ZSH shell selected."
-        link_zsh
-        install_zsh
-        install_omz
-        ;;
-    *)
-        echo "Other shell selected. No shell configs activated."
-        ;;
-esac
-
+run_install
+link_configs
 echo "Installation complete!"
