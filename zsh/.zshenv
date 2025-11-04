@@ -36,7 +36,7 @@ export ANSIBLE_HOME="$XDG_CONFIG_HOME/ansible" \
        TF_CLI_CONFIG_FILE="$XDG_CONFIG_HOME/terraform/.terraformrc" \
        TF_PLUGIN_CACHE_DIR="$XDG_CACHE_HOME/.terraform.d/plugin-cache" \
        TLRC_CONFIG="$XDG_CONFIG_HOME/tldr/config.toml" \
-       USER_BIN_DIR="$HOME/.local/bin"
+       USER_BIN_DIR="$HOME/.local/bin/local"
 
 # Other
 export DOTFILES="$HOME/Code/github/rginnow/dotfiles" \

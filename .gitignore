@@ -1,13 +1,1 @@
 node_modules/
-.fisher/
-
-bin/uv
-bin/uvx
-bin/local/*
-bin/cursor-agent
-git/config_local
-fish/fish_variables
-fish/fishprof*.txt
-zsh/.zcompdump
-zsh/.zhistory
-zsh/.zsh_history

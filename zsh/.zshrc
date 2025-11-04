@@ -1,18 +1,30 @@
+# The goal of this .zshrc is to be minimal, but also provide a solid
+# foundation for a custom zsh configuration. It is designed to be
+# fast, efficient, configurable, and easy to maintain.
+
+# -------------------------
+# INITIALIZATION
+# This section is responsible for system defaults,
+# and anything that may require user input.
+# -------------------------
+
 # Ensure XDG directories exist
-mkdir -p ~/{.config,.cache,.local/share,.local/state}
+mkdir -p $XDG_CACHE_HOME $XDG_CONFIG_HOME $XDG_DATA_HOME $XDG_STATE_HOME
 
-# Create the zsh cache directory if it doesn't exist
-[[ -d "$XDG_CACHE_HOME/zsh" ]] || mkdir -p "$XDG_CACHE_HOME/zsh"
+# Pre-build cache directories for common tools
+mkdir -p $XDG_CACHE_HOME/{bat,bun,nvim,zsh}
 
-# Homebrew environment
-if [[ -f "/opt/homebrew/bin/brew" ]]; then
-    export HOMEBREW_CASK_OPTS="appdir='$HOME/Applications'"
-    if [[ ! -f "$XDG_CACHE_HOME/zsh/brew_init.zsh" ]]; then
-        command brew shellenv > "$XDG_CACHE_HOME/zsh/brew_init.zsh"
-    fi
-    source "$XDG_CACHE_HOME/zsh/brew_init.zsh"
-else
-    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# Convenience variable for platform checks
+PLATFORM=$(uname -s)
+
+# Do things specific to MacOS
+if [[ "$PLATFORM" = "Darwin" ]]; then
+    source $XDG_CONFIG_HOME/zsh/zshrc.d/macos.zsh
+fi
+
+# Do things specific to Raspberry Pi/Debian
+if [[ "$PLATFORM" = "Linux" ]] && [[ -f "/etc/debian_version" ]]; then
+    source $XDG_CONFIG_HOME/zsh/zshrc.d/debian.zsh
 fi
 
 # If using Kitty, auto-start tmux
@@ -20,37 +32,44 @@ if [[ -z "$TMUX" ]] && [[ "$TERM" = "xterm-kitty" ]]; then
   exec tmux new-session -A -s main && exit;
 fi
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
+# -------------------------
+# P10k INSTANT PROMPT
+# Must come after initialization that may contain console input,
+# but before any additional configuration.
+# -------------------------
+
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Check for Laravel Herd
-if [[ -d "/Applications/Herd.app" ]]; then
-    export HERD_PHP_83_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/83/" \
-           HERD_PHP_84_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/84/" \
-           HERD_PHP_85_INI_SCAN_DIR="$HOME/Library/Application Support/Herd/config/php/85/" \
-           NVM_DIR="$HOME/Library/Application Support/Herd/config/nvm" \
-           PATH="$HOME/Library/Application Support/Herd/bin:$PATH"
-fi
-
 
 # -------------------------
-# Configure Options
+# CONFIGURE OPTIONS
+# Dedicated section for configuring ZSH itself.
 # -------------------------
 
+# adjust PATH, ensuring unique entries
+typeset -U path PATH
+path+=(
+    "$HOME/.local/bin/local"
+    "$HOME/.local/bin"
+)
+
+# Set some ZSH options, including history settings
 source $XDG_CONFIG_HOME/zsh/zshrc.d/options.zsh
 
+# Configure completion settings
 source $XDG_CONFIG_HOME/zsh/zshrc.d/completions.zsh
+
+
+# -------------------------
+# ZIM FRAMEWORK
+# Zim is a ZSH framework that provides speedy configuration
+# and management of ZSH plugins. https://zimfw.sh/
+# -------------------------
 
 # Use degit instead of git as the default tool to install and update modules.
 zstyle ':zim:zmodule' use 'degit'
-
-# -------------------------
-# Initialize Zim + Modules
-# -------------------------
 
 # Download zimfw plugin manager if missing.
 if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
@@ -80,13 +99,9 @@ zsh-defer _evalcache fnm env --use-on-cd --shell zsh
 zsh-defer _evalcache fzf --zsh
 zsh-defer _evalcache zoxide init zsh
 
-# Orbstack command-line tools and integration
-if [[ -d ~/.orbstack ]]; then
-    source ~/.orbstack/shell/init.zsh 2>/dev/null || :
-fi
-
 # -------------------------
-# User Configuration
+# USER CONFIGURATION
+# This section does any final user-specific changes.
 # -------------------------
 
 # Load personal aliases
@@ -95,5 +110,10 @@ fi
 # Prevent accidental git commands outside intended repo
 [[ -f "$XDG_CONFIG_HOME/zsh/zshrc.d/gitguard.zsh" ]] && source $XDG_CONFIG_HOME/zsh/zshrc.d/gitguard.zsh
 
-# p10k prompt
+
+# -------------------------
+# P10k PROMPT
+# Must be last.
+# -------------------------
+
 [[ -f "$XDG_CONFIG_HOME/zsh/.p10k.zsh" ]] && source "$XDG_CONFIG_HOME/zsh/.p10k.zsh"

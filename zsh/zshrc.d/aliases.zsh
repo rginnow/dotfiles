@@ -1,3 +1,7 @@
+# -------------------------
+# USER-DEFINED ALIASES
+# -------------------------
+
 # File Navigation
 alias ..='cd ..'
 alias ...='cd ../..'

@@ -1,0 +1,6 @@
+# Shouldn't ever show up in this directory, but just in case...
+.zcompdump
+.zcompcache
+.zhistory
+.zsh_history
+.zsh_sessions
