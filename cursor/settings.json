@@ -150,7 +150,9 @@
     "config": "properties",
     "*.config": "properties",
     ".env": "dotenv",
-    ".env.*": "dotenv"
+    ".env.*": "dotenv",
+    ".zimrc": "shellscript",
+    "pre-commit": "shellscript"
   },
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
