@@ -126,6 +126,7 @@ link_configs() {
     # ZSH
     echo "Linking ZSH config..."
     backup_config "zsh"
+    ln -sf "$DOTFILES/zsh" "$CONFIG_HOME/zsh"
     ln -sf "$DOTFILES/zsh/.zshenv" "$HOME/.zshenv"
 }
 
