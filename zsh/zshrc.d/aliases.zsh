@@ -2,6 +2,8 @@
 # USER-DEFINED ALIASES
 # -------------------------
 
+PLATFORM=$(uname -s)
+
 # File Navigation
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -35,7 +37,9 @@ alias cleanup="rm -rf node_modules && rm -rf vendor"
 alias refresh="cleanup && npm install && composer install --prefer-dist"
 
 # Applications
-alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+if [[ "$PLATFORM" == Darwin ]]; then
+    alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+fi
 
 # Ansible
 alias play="ansible-playbook -i ~/.config/ansible/hosts"
@@ -80,7 +84,7 @@ alias df="duf"
 alias dfj="duf --json"
 
 # BAT - improved file viewing (like cat)
-if [[ $(uname) == Darwin ]]; then
+if [[ "$PLATFORM" == Darwin ]]; then
     alias cat="bat"
     alias batlog="bat --paging=never -l log" # used with tail -f
 
