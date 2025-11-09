@@ -80,12 +80,21 @@ alias df="duf"
 alias dfj="duf --json"
 
 # BAT - improved file viewing (like cat)
-alias cat="bat"
-alias batlog="bat --paging=never -l log" # used with tail -f
+if [[ $(uname) == Darwin ]]; then
+    alias cat="bat"
+    alias batlog="bat --paging=never -l log" # used with tail -f
 
-# highlighting help messages with bat
-alias -g -- -h='-h 2>&1 | bat --language=help --style=plain'
-alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
+    # highlighting help messages with bat
+    alias -g -- -h='-h 2>&1 | bat --language=help --style=plain'
+    alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
+else
+    alias cat="batcat"
+    alias batlog="batcat --paging=never -l log" # used with tail -f
+
+    # highlighting help messages with batcat
+    alias -g -- -h='-h 2>&1 | batcat --language=help --style=plain'
+    alias -g -- --help='--help 2>&1 | batcat --language=help --style=plain'
+fi
 
 # Quick networking checks
 alias ping="ping -c 5"
