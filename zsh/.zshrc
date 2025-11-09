@@ -96,8 +96,12 @@ source ${ZIM_HOME}/modules/zsh-defer/zsh-defer.plugin.zsh
 # Defer evals and cache the results on first run via the evalcache plugin (clear the cache w/ `_evalcache_clear`).
 zsh-defer _evalcache docker completion zsh
 zsh-defer _evalcache fnm env --use-on-cd --shell zsh
-zsh-defer _evalcache fzf --zsh
 zsh-defer _evalcache zoxide init zsh
+
+# Not every platform has `--zsh`, so we can only init on Mac for now.
+if [[ "$PLATFORM" = "Darwin" ]]; then
+    zsh-defer _evalcache fzf --zsh
+fi
 
 # -------------------------
 # USER CONFIGURATION

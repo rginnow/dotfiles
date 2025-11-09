@@ -41,7 +41,11 @@ zmodule completion
 zmodule Aloxaf/fzf-tab
 zmodule romkatv/zsh-defer -d
 zmodule mroth/evalcache
-zmodule fzf
+
+# Not every platform supports fzf the same way, so check for MacOS.
+if [[ $(uname) == Darwin ]]; then
+    zmodule fzf
+fi
 
 # -------------------------
 # Modules that must be initialized last
