@@ -7,7 +7,7 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias ls="eza -1 --group-directories-first --color=always --icons=always"
-alias ll="eza -lghamUF --group-directories-first --color=always --icons=always --git" # list view: long, group, headers, all, modified, created, file indicators
+alias ll="eza -lghamF --group-directories-first --color=always --icons=always --git" # list view: long, group, headers, all, modified, created, file indicators
 alias home='cd $HOME'
 alias projects="cd $HOME/Code"
 alias sites="cd $HOME/Herd"
