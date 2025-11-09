@@ -4,51 +4,11 @@
 # it will handle gathering dependencies and tools for a first time install.
 
 install_dependencies() {
-    # Set up dependency list
-    DEPENDENCIES=(
-        "build-essential"
-        "ca-certificates"
-        "curl"
-        "git"
-        "gnupg2"
-        "openssl"
-        "vim"
-        "wget"
-    )
+    # Install core dependencies
+    sudo apt install -y build-essential ca-certificates curl git gnupg2 openssl vim wget
 
-    TOOLS=(
-        "bat"
-        "cowsay"
-        "direnv"
-        "fastfetch"
-        "fd-find"
-        "fzf"
-        "jq"
-        "lolcat"
-        "neovim"
-        "nmap"
-        "rclone"
-        "ripgrep"
-        "tmux"
-    )
-
-    for package in "${DEPENDENCIES[@]}"; do
-        if ! dpkg -l | grep -q "$package"; then
-            echo "Installing $package..."
-            apt install -y "$package"
-        else
-            echo "$package is already installed. Continuing..."
-        fi
-    done
-
-    for tool in "${TOOLS[@]}"; do
-        if ! dpkg -l | grep -q "$tool"; then
-            echo "Installing $tool..."
-            apt install -y "$tool"
-        else
-            echo "$tool is already installed. Continuing..."
-        fi
-    done
+    # Install tools
+    sudo apt install -y bat cowsay direnv eza fd-find fzf jq lolcat neovim nmap rclone ripgrep tmux
 }
 
 install_tools() {
@@ -56,13 +16,11 @@ install_tools() {
     TOOLS=(
         "bun"
         "docker"
-        "eza"
         "zoxide"
     )
     INSTALL_COMMANDS=(
         "curl -fsSL https://bun.sh/install | bash"
         "curl -sSL https://get.docker.com | sh && sudo usermod -aG docker $USER"
-        "sudo apt install -y eza"
         "curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh"
     )
 
@@ -150,4 +108,5 @@ sudo apt autoremove -y
 sudo apt clean
 
 # Symlink to bind fd-find to fd instead
+mkdir -p "$HOME/.local/bin/local"
 ln -s "$(which fdfind)" "$HOME/.local/bin/local/fd"
