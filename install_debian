@@ -8,7 +8,7 @@ install_dependencies() {
     sudo apt install -y build-essential ca-certificates curl git gnupg2 openssl vim wget
 
     # Install tools
-    sudo apt install -y bat cowsay direnv eza fd-find fzf jq lolcat neovim nmap rclone ripgrep tmux
+    sudo apt install -y batcat cowsay direnv eza fd-find fzf jq lolcat neovim nmap rclone ripgrep tmux
 }
 
 install_tools() {
